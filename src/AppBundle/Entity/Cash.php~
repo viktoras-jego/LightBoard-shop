@@ -1,0 +1,87 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: viktoras
+ * Date: 16.11.5
+ * Time: 15.34
+ */
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Car
+ *
+ * @ORM\Table(name="Cash")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CarRepository")
+ */
+class Cash
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Price", type="integer",length=255)
+     */
+
+    private $Money;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set Money
+     *
+     * @param \AppBundle\Entity\CarModel $Money
+     *
+     * @return Cash
+     */
+    public function setComment($Money)
+    {
+        $this->Money = $Money;
+
+        return $this;
+    }
+
+    /**
+     * Get Money
+     *
+     * @return int
+     */
+    public function getMoney()
+    {
+        return $this->Money;
+    }
+
+
+    /**
+     * Set money
+     *
+     * @param string $money
+     *
+     * @return Cash
+     */
+    public function setMoney($money)
+    {
+        $this->Money = $money;
+
+        return $this;
+    }
+}
