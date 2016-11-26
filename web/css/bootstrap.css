@@ -3059,6 +3059,30 @@ a.btn.disabled,
 fieldset[disabled] a.btn {
   pointer-events: none;
 }
+
+
+.button_test {
+
+    border-radius:4px;
+    font-family: Arial;
+    font-weight: 800;
+    background: #ffffff;
+    color: #000000;
+    font-size: 15px;
+    padding: 10px 20px 10px 20px;
+    border: solid rgba(0, 0, 0, 0.51) 2px;
+    text-decoration: none;
+}
+
+.button_test:hover {
+    background: #e0e0e0;
+    text-decoration: none;
+}
+
+
+
+
+
 .btn-default {
   color: #333;
   background-color: #fff;
@@ -3617,6 +3641,10 @@ tbody.collapse.in {
   bottom: 0;
   left: 0;
   z-index: 990;
+}
+
+.header1{
+    background-image: url("../images/diagonal_waves_@2X.png");
 }
 .pull-right > .dropdown-menu {
   right: 0;

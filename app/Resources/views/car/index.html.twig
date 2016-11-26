@@ -2,44 +2,37 @@
 
 {% block body %}
     <head>
-        <title>Bootstrap Example</title>
+        <div style="position: relative; width: 2000px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')"></div>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href=" http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
 
     </head>
-<body>
-<nav class="navbar  navbar-fixed-top navbar-dark bg-primary">
-    <div class="container">
-        <div class="navbar-header">
-          <h4>  <div class="navbar-text"></div></h4>
 
-             &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-        </div>
-
-        <div class="navbar-header">
-            <b>   <div class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</div></b>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href=""></a></li>
-                <li><a>About</a></li>
-
-
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
-</body>
-<br>
-    <br>
-    <br>
     <div>
+        <div style="position: relative; height: 935px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+            <div style="position: relative; width: 2000px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+        <br>
+        <br>
+
+        <nav class="navbar navbar-fixed-top">
+
+            <div class="container-fluid">
+                <div style="position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
+                    <br>
+                    <button class="button_test">SHOP </button>
+                    &nbsp
+                    <button class="button_test">ABOUT US </button>
+                    &nbsp
+                    <button class="button_test">SUPPORT </button>
+                </div>
 
 
+            </div>
+        </nav>
 
 
     </div>
@@ -117,6 +110,7 @@
     }, 2350)
 
 </script>
+        </div>
 {% endblock %}
 
 {% block stylesheets %}
