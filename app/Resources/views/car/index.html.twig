@@ -50,58 +50,27 @@
 
     <div class="hero-unit">
         <h1>
-            Pinigai:
+           {# Pinigai:
 
 
                 {{kaina}}
 
-            <a href="{{ path("add_produktas") }}"> +</a>
+
+            <a href="{{ path("add_produktas") }}"> +</a>#}
         </h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <center> <p style="font-family: times, serif; font-size:70pt; font-style:italic">
+            Welcome
+        </p></center>
     </div>
-    <div id="wrapper">
 
-        <div id="container">
-            <h3>   <a href="{{ path("add_car") }}">Add car </a></h3>
-<table class="table">
-
-    <thead>
-    <tr>
-    <th>Title</th>
-    <th>Price</th>
-    <th>Action</th>
-    </tr>
-    </thead>
-    <h3>
-        <tbody>
-        {% for car in cars %}
-            <tr>
-                   <td> {{ car.comment }}</td>
-                    <td>{{ car.Price }}</td>
-                <td>
-                    <a href ="{{ path("edit_car",{car: car.id}) }}">
-                        EDIT
-                    </a>
-                    |
-                    <a href="{{ path("delete_car",{car: car.id}) }}">
-                        BUY
-                    </a>
-                </td>
-
-
-            </tr>
-        {% endfor %}
-        </tbody>
-    </h3>
-</table>
-
-
+    </div>
 
 
         </div>
-
-    </div>
-
-
 <script>
 
 
@@ -117,7 +86,7 @@
     <style>
        body { background: #F5F5F5; font: 20px/1.5 sans-serif; }
        a {text-decoration: none}
-       h1, h2 { line-height: 1.2; margin: 0 0 .0em; }
+       h1, h2, h6 { line-height: 1.2; margin: 0 0 .0em; }
         h1 { font-size: 20px; }
         h2 { font-size: 21px; margin-bottom: 1em; }
 
