@@ -6,7 +6,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
 
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
 
@@ -33,6 +33,9 @@
 
             </div>
         </nav>
+
+
+
 
 
     </div>
@@ -62,9 +65,15 @@
         <br>
         <br>
         <br>
-        <center> <p style="font-family: times, serif; font-size:70pt; font-style:italic">
-            Welcome
-        </p></center>
+        <center>
+
+            <div style="overflow: hidden;font-size: 40pt" >
+                <div id='div1' style="position: relative;top: -80px; opacity: 1; text-align: center; font-family: 'Bungee', cursive; font-size:50pt; display: inline-block">
+                    Welcome
+                </div>
+            </div>
+
+        </center>
     </div>
 
     </div>
@@ -78,8 +87,22 @@
         $( ".flash-notice" ).fadeOut();
     }, 2350)
 
+
+    slideTimer = setTimeout(function() {
+        var elm = $("#div1");
+       console.log(elm);
+        elm.animate({
+            top:"0px",
+
+        }, 1000);
+    }, 1000);
+
+
+
+
 </script>
-        </div>
+
+
 {% endblock %}
 
 {% block stylesheets %}
