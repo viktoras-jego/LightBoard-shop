@@ -71,9 +71,31 @@
                 <div id='div1' style="position: relative;top: -80px; opacity: 1; text-align: center; font-family: 'Bungee', cursive; font-size:50pt; display: inline-block">
                     Welcome
                 </div>
+
+
             </div>
 
+          <div>
+
+             <img class="logo1" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
+
+          </div>
+            <img class="logo" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
         </center>
+        
+{#<div style="display: inline-block;">
+
+    <h1>         <div class="box" style="display: inline-block;" >A</div>
+                 <div class="box" style="display: inline-block;" >A</div>
+                 <div class="box" style="display: inline-block;" >A</div>
+                 <div class="box" style="display: inline-block;" >A</div>
+                 <div class="box" style="display: inline-block;" >A</div>
+                 <div class="box" style="display: inline-block;" >A</div>
+             </h1>
+
+    </div>#}
+
+
     </div>
 
     </div>
@@ -85,7 +107,7 @@
 
     setTimeout(function () {
         $( ".flash-notice" ).fadeOut();
-    }, 2350)
+    }, 350)
 
 
     slideTimer = setTimeout(function() {
@@ -94,15 +116,12 @@
         elm.animate({
             top:"0px",
 
-        }, 1000);
-    }, 1000);
-
-
-
+        }, 1500);
+    }, 300);
 
 </script>
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
