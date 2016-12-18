@@ -1,27 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <head>
-        <div style="position: relative; width: 2000px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')"></div>
+
+
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
 
-    </head>
 
-    <div>
-        <div style="position: relative; height: 935px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
-            <div style="position: relative; width: 2000px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+
+
+        <div style="position: relative; height: 140px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+            <div  style="position: relative; width: 1800px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+
         <br>
         <br>
 
-        <nav class="navbar navbar-fixed-top">
+                {% if 'ROLE_USER' in user_roles%}
 
-            <div class="container-fluid">
-                <div style="position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
+                    <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
+                    <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
+                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                    </a>
+
+                {% endif %}
+
+
+
+                {% if  user_roles is null %}
+                <div  style=" position: absolute">
+                    <br>
+
+                    <div id="sidebar" style="position: fixed; width: 230px;height: 1000px; background: rgba(255, 255, 255, 0.60)" class="col-sm-3 col-md-2 sidebar">
+                    </div>
+                    <br><br><br><br><br><br><br><br>
+                        <div style="position: relative" id="log">
+
+                        {{ include('FOSUserBundle:Security:login_content.html.twig') }}
+                        </div>
+                </div>
+
+                <nav class="navbar navbar-fixed-top">
+                    <br>
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                    <button  id="login1" type="button" style=" text-align: right" class="button_test">Login </button>
+                </nav>
+                    {% endif %}
+
+
+
+                    <div class="container-fluid">
+                    <div style="position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
                     <br>
                     <button class="button_test">SHOP </button>
                     &nbsp
@@ -30,25 +64,29 @@
                     <button class="button_test">SUPPORT </button>
                 </div>
 
-
-            </div>
-        </nav>
+                </div>
 
 
 
+                {% if error %}
+                    <div class="flash-notice">
+                        <center>  <div style="width: 400px" class="alert alert-danger fade in">
+                             <strong>Invalid Username/Password</strong>
+                        </div></center>
+                    </div>
+                {% endif %}
 
 
     </div>
-    {% for flash_message in app.session.flashBag.get('notice') %}
-        <div class="flash-notice">
 
+   {# {% for flash_message in app.session.flashBag.get('notice') %}
+        <div class="flash-notice">
             <div class="alert alert-danger fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <center> <strong>Not enough money</strong></center>
             </div>
-
         </div>
     {% endfor %}
+      #}
 
 
     <div class="hero-unit">
@@ -68,32 +106,33 @@
         <center>
 
             <div style="overflow: hidden;font-size: 40pt" >
-                <div id='div1' style="position: relative;top: -80px; opacity: 1; text-align: center; font-family: 'Bungee', cursive; font-size:50pt; display: inline-block">
+                <div id='div1' style=" position: relative;top: -80px; opacity: 1; text-align: center; font-family: 'Bungee', cursive; font-size:50pt; display: inline-block">
+                    BOOSTER
+                </div>
+            </div>
+            <div style="position: relative;z-index: -1; height: 750px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+
+
+            <br>
+            <br>
+          <div>
+             <img class="logo1" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
+            <img class="logo" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
+          </div>
+
+                <br><br><br><br><br><br><br><br>
+
+                <div style="color: #000000; position: relative;top: -80px; opacity: 1; text-align: center; font-family: 'Bungee', cursive; font-size:40pt; display: inline-block">
                     Welcome
                 </div>
 
 
-            </div>
-
-          <div>
-
-             <img class="logo1" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
-
-          </div>
-            <img class="logo" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
         </center>
-        
-{#<div style="display: inline-block;">
 
-    <h1>         <div class="box" style="display: inline-block;" >A</div>
-                 <div class="box" style="display: inline-block;" >A</div>
-                 <div class="box" style="display: inline-block;" >A</div>
-                 <div class="box" style="display: inline-block;" >A</div>
-                 <div class="box" style="display: inline-block;" >A</div>
-                 <div class="box" style="display: inline-block;" >A</div>
-             </h1>
 
-    </div>#}
+
+
 
 
     </div>
@@ -101,25 +140,27 @@
     </div>
 
 
-        </div>
+
+
+
 <script>
-
 
     setTimeout(function () {
         $( ".flash-notice" ).fadeOut();
-    }, 350)
+    }, 2850);
 
 
     slideTimer = setTimeout(function() {
         var elm = $("#div1");
        console.log(elm);
         elm.animate({
-            top:"0px",
+            top:"0px"
 
         }, 1500);
     }, 300);
 
 </script>
+    <script src="{{ asset('js/forsidebar.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}

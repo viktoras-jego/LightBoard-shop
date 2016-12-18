@@ -22,6 +22,15 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+
+    }
+    /**
+     *
+     *
+     */
+
+    public static function get()
+    {
+        return new User();
     }
 }

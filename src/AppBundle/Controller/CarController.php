@@ -6,6 +6,7 @@ use AppBundle\Entity\Car;
 use AppBundle\Entity\Cash;
 use AppBundle\Entity\Produktas;
 use AppBundle\Form\CarType;
+use AppBundle\Service\MathService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Types\DecimalType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,7 +18,19 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\Form\Factory\FactoryInterface;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Model\UserInterface;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  *
@@ -29,15 +42,45 @@ class CarController extends Controller
 
 {
 
-
-
-
-
-
     /**
      * @Route("/",name="car_index")
      */
     public function indexAction(Request $request){
+
+      /*  $math = $this->get('app.math');
+        $res = $math->addNumbers(2,3);
+        dump($res);
+        return new Response();*/
+
+
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+
+
 
        // dump($request-> query->get('comment'));
 
@@ -50,12 +93,20 @@ class CarController extends Controller
       // dump($custom1);
       // return new Response();
 
-       return $this->render('car/index.html.twig',[
+
+
+
+       return $this->render('@FOSUser/Security/index.html.twig',[
            'cars' => $cars,
             'kaina' => $produktas->getKaina(),
+           'last_username' => $lastUsername,
+           'error' => $error,
+           'csrf_token' => $csrfToken,
+           'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
 
         ]);
     }
+
 
 
 //test
