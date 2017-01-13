@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
+    <div style="position: relative; height: 230px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+
+
+        <br>
+        <br>
+
+        {% if 'ROLE_USER' in user_roles%}
+
+            <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
+            <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+
+        {% endif %}
+
+
+
+        {% if  user_roles is null %}
+            <div  style=" position: absolute">
+                <br>
+
+                <div id="sidebar" style="position: fixed; width: 230px;height: 1000px; background: rgba(255, 255, 255, 0.60)" class="col-sm-3 col-md-2 sidebar">
+                </div>
+                <br><br><br><br><br><br><br><br>
+                <div style="position: relative" id="log">
+
+                    {{ include('FOSUserBundle:Security:login_content.html.twig') }}
+                </div>
+            </div>
+
+            <nav style="width: 300px" class="navbar navbar-fixed-top">
+                <br>
+                &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                <button  id="login1" type="button" style=" text-align: right" class="button_test">Login </button>
+            </nav>
+        {% endif %}
+
+
+
+        <div  class="container-fluid">
+            <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
+                <br>
+                <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
+                &nbsp
+                <button class="button_test">ABOUT US </button>
+                &nbsp
+                <button class="button_test">SUPPORT </button>
+            </div>
+
+        </div>
+
+
+
+        {% if error %}
+            <div class="flash-notice">
+                <center>  <div style="width: 400px" class="alert alert-danger fade in">
+                        <strong>Invalid Username/Password</strong>
+                    </div></center>
+            </div>
+        {% endif %}
+
+
+
+
+
+
+
+    <br><br>
+
+    <div class="row">
+        <div class="col-sm-5"></div>
+            <div style="font-family: 'Bungee', cursive; font-size:50pt; display: inline-block" class="col-sm-1">
+               Shop
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10"></div>
+            <div class="col-sm-2">
+              <a href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
+            </div>
+
+    </div>
+<br><br>
+
+
+    {% for skateboard in skateboard %}
+
+    <div style="text-align: center;" class="col-sm-3">
+        <img   src="{{ asset('images/SkateTest.jpg') }}">
+        <br>
+      <div style="font-family: 'Oswald', sans-serif;font-size: 13pt">   {{ skateboard.title }}</div>
+        <div style="font-family: 'Oswald', sans-serif;font-size: 12pt">  {{ skateboard.category }}</div>
+            <div style="font-family: 'Oswald', sans-serif;font-size: 11pt">  {{ skateboard.price }}.00eur </div>
+        <br>
+    </div>
+
+
+</div>
+    {% endfor %}
+
+
+
+
+
+
+    <script>
+
+        setTimeout(function () {
+            $( ".flash-notice" ).fadeOut();
+        }, 2850);
+
+
+        slideTimer = setTimeout(function() {
+            var elm = $("#div1");
+            console.log(elm);
+            elm.animate({
+                top:"0px"
+
+            }, 1500);
+        }, 300);
+
+    </script>
+    <script src="{{ asset('js/forsidebar.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+       body { background: #F5F5F5; font: 20px/1.5 sans-serif; }
+       a {text-decoration: none}
+       h1, h2, h6 { line-height: 1.2; margin: 0 0 .0em; }
+        h1 { font-size: 20px; }
+        h2 { font-size: 21px; margin-bottom: 1em; }
+
+        p { margin: 0 0 1em 0; }
+        a { color: #000000; }
+        a:hover { text-decoration: none; }
+       code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+        #wrapper { background: #FFF; margin: 1em auto; max-width: 500px; width: 95%; }
+        #container { padding: 2em; }
+        #welcome, #status { margin-bottom: 2em; }
+        #welcome h1 span { display: block; font-size: 75%; }
+        #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
+        #icon-book { display: none; }
+
+        @media (min-width: 568px) {
+            #wrapper { width: 80%; margin: 2em auto; }
+            #icon-book { display: inline-block; }
+            #status a, #next a { display: block; }
+
+            @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
+        }
+    </style>
+{% endblock %}
+
+

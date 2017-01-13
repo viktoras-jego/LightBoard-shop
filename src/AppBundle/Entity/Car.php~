@@ -29,6 +29,15 @@ class Car
 
     private $comment;
 
+//-------------------------------------------------------------
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Price", type="integer",length=255)
+     */
+
+    private $Price;
+//-------------------------------------------------------------
 
     /**
      * @var
@@ -74,5 +83,54 @@ class Car
     public function getModel()
     {
         return $this->model;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     *
+     * @return Car
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set Price
+     *
+     * @param int $Price
+     *
+     * @return Car
+     */
+    public function setPrice($Price)
+    {
+        $this->Price = $Price;
+
+        return $this;
+    }
+
+
+    /**
+     * Get Price
+     *
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->Price;
     }
 }

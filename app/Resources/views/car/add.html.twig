@@ -1,14 +1,53 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<div style="position: relative; height: 1000px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+    <div  style="position: relative; width: 1800px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+        <br>
+        <br>
+
+        {% if 'ROLE_USER' in user_roles%}
+
+            <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
+            <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+
+        {% endif %}
+
+        <div  class="container-fluid">
+            <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
+                <br>
+                <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
+                &nbsp
+                <button class="button_test">ABOUT US </button>
+                &nbsp
+                <button class="button_test">SUPPORT </button>
+            </div>
+
+        </div>
+        <br>
+
     <div id="wrapper">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div style="font-family: 'Fira Sans Extra Condensed',cursive; font-weight: 400" class="col-sm-7">
+                <h1>Creation of the new product</h1>
+            </div>
+        </div>
+
         <div id="container">
 
-            {{ edit ? 'Editing' : 'Creating new' }}
             {{  form_start(forma)  }}
             {{  form_widget(forma)  }}
-
             {{  form_end(forma)  }}
 
 

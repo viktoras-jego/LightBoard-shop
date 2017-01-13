@@ -5,7 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Cash;
 use AppBundle\Entity\Produktas;
+use AppBundle\Entity\Shop;
+use AppBundle\Entity\Skateboard;
 use AppBundle\Form\CarType;
+use AppBundle\Form\ShopType;
 use AppBundle\Service\MathService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Types\DecimalType;
@@ -15,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +55,22 @@ class CarController extends Controller
         $res = $math->addNumbers(2,3);
         dump($res);
         return new Response();*/
+
+
+        $form = $this -> createFormBuilder()
+
+            ->add('SHOP', SubmitType::class, [
+                'label' => 'SHOP',
+                'attr' => [
+                    'class' => 'button_test'
+                ]
+            ])
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('shop');
+        }
 
 
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
@@ -103,13 +123,22 @@ class CarController extends Controller
            'error' => $error,
            'csrf_token' => $csrfToken,
            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
-
+           'form'=> $form ->createView(),
         ]);
     }
 
 
 
-//test
+    /**
+     * @Route("/upload-target")
+     */
+    public function uploadAction(Request $request)
+    {
+
+
+
+        return new Response('ok');
+    }
 
 
     /**
@@ -161,43 +190,7 @@ class CarController extends Controller
 
 
 
-    /**
-     * @Route("/add",name="add_car")
-     * @param Request $request
-     * @return Response
-     */
-    public function addAction(Request $request)
-    {
-        $car = new Car();
 
-        // Create our form
-        $form = $this -> createFormBuilder($car)
-            ->add('comment',TextType::class)
-            ->add('Price',NumberType::class)
-            ->add('save',SubmitType::class,['label' => 'Create Car'])
-            ->getForm()
-            ;
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-
-            $em = $this ->getDoctrine()->getManager();
-            $em-> persist($car);
-            $em->flush();
-
-
-            return $this->redirectToRoute('car_index');
-        }
-
-
-
-        return $this->render('car/add.html.twig',[
-                'car' => $car,
-                'forma'=> $form ->createView(),
-                'edit' =>false,
-            ]
-        );}
 
     /**
      * @Route ("/edit/{car}",name="edit_car")
