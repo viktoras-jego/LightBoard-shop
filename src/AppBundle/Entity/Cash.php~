@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: viktoras
  * Date: 16.11.5
- * Time: 15.34
+ * Time: 21.13
  */
 
 namespace AppBundle\Entity;
@@ -13,75 +13,39 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Car
  *
- * @ORM\Table(name="Cash")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CarRepository")
+ * @package DoctBundle\Entity
+ * @ORM\Entity
+ * @ORM\Table(name="pinigai")
+ *
  */
+
 class Cash
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
+
     /**
-     * @var int
      *
-     * @ORM\Column(name="Price", type="integer",length=255)
+     * @ORM\GeneratedValue()\Column( type="string")
      */
 
-    private $Money;
+    private $money;
 
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set Money
-     *
-     * @param \AppBundle\Entity\CarModel $Money
-     *
-     * @return Cash
-     */
-    public function setComment($Money)
-    {
-        $this->Money = $Money;
-
-        return $this;
-    }
-
-    /**
-     * Get Money
-     *
-     * @return int
-     */
-    public function getMoney()
-    {
-        return $this->Money;
-    }
-
-
-    /**
-     * Set money
-     *
-     * @param string $money
-     *
-     * @return Cash
-     */
-    public function setMoney($money)
-    {
-        $this->Money = $money;
-
-        return $this;
     }
 }

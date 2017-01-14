@@ -193,16 +193,16 @@ class CarController extends Controller
 
 
     /**
-     * @Route ("/edit/{car}",name="edit_car")
+     * @Route ("/edit/{skateboard}",name="edit_car")
      * @param Request $request
      * @param Car $car
      * @return Response
      */
 
-        public function editAction(Request $request, Car $car){
+        public function editAction(Request $request, Skateboard $skateboard){
 
 
-                $form = $this->createForm(CarType::class, $car)
+                $form = $this->createForm(CarType::class, $skateboard)
 
             ;
             $form->handleRequest($request);

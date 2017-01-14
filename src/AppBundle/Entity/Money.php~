@@ -79,4 +79,28 @@ class Money
     {
         return $this->money;
     }
+
+    /**
+     * Set address
+     *
+     * @param \AppBundle\Entity\Money $address
+     *
+     * @return Money
+     */
+    public function setAddress(\AppBundle\Entity\Money $address = null)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return \AppBundle\Entity\Money
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 }

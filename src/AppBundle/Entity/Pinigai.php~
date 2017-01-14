@@ -39,4 +39,38 @@ class Pinigai
     private $pinigai;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set pinigai
+     *
+     * @param string $pinigai
+     *
+     * @return Pinigai
+     */
+    public function setPinigai($pinigai)
+    {
+        $this->pinigai = $pinigai;
+
+        return $this;
+    }
+
+    /**
+     * Get pinigai
+     *
+     * @return string
+     */
+    public function getPinigai()
+    {
+        return $this->pinigai;
+    }
 }

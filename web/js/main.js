@@ -1,5 +1,8 @@
 CSSPlugin.defaultSmoothOrigin = true;
 
+
+
+
 (function() {
 var abc1 = 1;
 
@@ -11,7 +14,12 @@ var sidebar = document.getElementById("sidebar");
 
 
 
-if(playBtn) {
+
+
+
+
+
+   if(playBtn) {
 
    abc.to(login, 0, {
       x: 15,
@@ -132,4 +140,8 @@ at.to(".logo1",1,{
    delay:-2
 });
 
+
+
 })()
+
+

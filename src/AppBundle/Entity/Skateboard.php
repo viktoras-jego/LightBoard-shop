@@ -48,10 +48,10 @@ class Skateboard
     /**
      * @var int
      *
-     * @ORM\Column(name="price", type="integer",length=255)
+     * @ORM\Column(name="price", type="decimal", precision=7, scale=2)
      */
 
-    private $price;
+    private $price = 0;
 //-------------------------------------------------------------
 
     /**
@@ -102,7 +102,7 @@ class Skateboard
     /**
      * Set price
      *
-     * @param integer $price
+     * @param decimal $price
      *
      * @return Skateboard
      */
@@ -116,7 +116,7 @@ class Skateboard
     /**
      * Get price
      *
-     * @return integer
+     * @return float
      */
     public function getPrice()
     {

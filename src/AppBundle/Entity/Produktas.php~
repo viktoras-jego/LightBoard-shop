@@ -29,10 +29,44 @@ class Produktas
     private $id;
 
     /**
-     * @var = string
+     * @var = int
      *
-     * @ORM\Column(name="kaina", type="string",length=255,nullable=true)
+     * @ORM\Column(name="kaina", type="integer",length=255,nullable=true)
      */
 
     private $kaina;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set kaina
+     *
+     * @param int $kaina
+     *
+     * @return Produktas
+     */
+    public function setKaina($kaina)
+    {
+        $this->kaina = $kaina;
+
+        return $this;
+    }
+
+    /**
+     * Get kaina
+     *
+     * @return integer
+     */
+    public function getKaina()
+    {
+        return $this->kaina;
+    }
 }

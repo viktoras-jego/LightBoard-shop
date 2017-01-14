@@ -5,9 +5,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Roboto:300" rel="stylesheet">
 
-    <div style="position: relative; height: 230px; background-image:url('{{ asset('images/abc2.png') }}')">
+    <div style="position: relative; height: 200px; background-image:url('{{ asset('images/abc2.png') }}')">
 
 
 
@@ -75,7 +75,7 @@
 
 
 
-    <br><br>
+
 
     <div class="row">
         <div class="col-sm-5"></div>
@@ -96,19 +96,19 @@
 
     {% for skateboard in skateboard %}
 
-    <div style="text-align: center;" class="col-sm-3">
-        <img   src="{{ asset('images/SkateTest.jpg') }}">
-        <br>
-      <div style="font-family: 'Oswald', sans-serif;font-size: 13pt">   {{ skateboard.title }}</div>
-        <div style="font-family: 'Oswald', sans-serif;font-size: 12pt">  {{ skateboard.category }}</div>
-            <div style="font-family: 'Oswald', sans-serif;font-size: 11pt">  {{ skateboard.price }}.00eur </div>
-        <br>
-    </div>
+        <div style="text-align: center;" class="col-sm-3">
+           <a href ="{{ path("edit_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative">
+                <img   src="{{ asset('images/skt.JPG') }}">
+                <br>
+                <div style="font-family: 'Open Sans Condensed', sans-serif;font-weight: 900;font-size: 14pt">   {{ skateboard.title }}</div>
+                <div style="font-family: 'Roboto', sans-serif;font-size: 12pt">  {{ skateboard.price }}€</div>
+                <br>
+            </div></a>
+        </div>
 
-
-</div>
     {% endfor %}
 
+    </div>
 
 
 
@@ -131,10 +131,10 @@
         }, 300);
 
     </script>
-    <script src="{{ asset('js/forsidebar.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+
+    <script src="{{ asset('js/shop.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
