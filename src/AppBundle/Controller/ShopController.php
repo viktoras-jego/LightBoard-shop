@@ -24,6 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -132,7 +133,10 @@ class ShopController extends Controller
                 ),
                 'required'    => false,
             ))
-
+            ->add('img', FileType::class, [
+                'label' => 'img',
+                'mapped' => false
+            ])
             ->add('save',SubmitType::class,array(
                 'label' => 'Create',
                 'attr' => array('style' => 'width: 100px')
@@ -172,13 +176,36 @@ class ShopController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $filename = $form->get('img')->getData()->getPathname();
+            $client_id="d5bfa397cfd42db";
+            $handle = fopen($filename, "r");
+            $data = fread($handle, filesize($filename));
+            $pvars   = array('image' => base64_encode($data));
+            $timeout = 30;
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'https://api.imgur.com/3/image.json');
+            curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $pvars);
+            $out = curl_exec($curl);
+            curl_close ($curl);
+            $pms = json_decode($out,true);
+            $url=$pms['data']['link'];
 
-            $em = $this ->getDoctrine()->getManager();
-            $em-> persist($product);
-            $em->flush();
+            if($pms && isset($pms['status']) && $pms['status'] == 200){
+                $em = $this ->getDoctrine()->getManager();
+
+                $em->flush();
+                return $this->redirectToRoute('shop_page');
+            }else{
+                echo "<h2>There's a Problem</h2>";
+                echo $pms['data']['error'];
+            }
 
 
-            return $this->redirectToRoute('shop_page');
+
         }
 
 
@@ -196,14 +223,13 @@ class ShopController extends Controller
     }
 
     /**
-     * @Route ("/edit/{skateboard}",name="edit_skate")
+     * @Route ("/product/{skateboard}",name="edit_skate")
      * @param Request $request
      * @param Car $car
      * @return Response
      */
 
     public function editAction(Request $request, Skateboard $skateboard){
-
 
         $form = $this->createForm(SkateboardType::class, $skateboard);
         $form->handleRequest($request);
@@ -240,13 +266,23 @@ class ShopController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this ->getDoctrine()->getManager();
 
-            $em->flush();
-            return $this->redirectToRoute('shop_page');
+
+            if($url!=""){
+                $em = $this ->getDoctrine()->getManager();
+
+                $em->flush();
+
+                return $this->redirectToRoute('shop_page');
+            }else{
+                echo "<h2>There's a Problem</h2>";
+                echo $pms['data']['error'];
+            }
+
+
         }
 
-        return $this->render('car/add.html.twig',[
+        return $this->render('shop.html.twig',[
             'product' => $skateboard,
             'forma'=> $form ->createView(),
             'edit' =>true,

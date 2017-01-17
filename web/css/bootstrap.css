@@ -3079,6 +3079,10 @@ fieldset[disabled] a.btn {
     background: #e0e0e0;
     text-decoration: none;
 }
+.photo_border{
+
+  border: 1px solid #bdbdbd;
+}
 
 
 .logo{

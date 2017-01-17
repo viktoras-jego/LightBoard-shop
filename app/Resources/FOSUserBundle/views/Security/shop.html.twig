@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Roboto:300" rel="stylesheet">
 
-    <div style="position: relative; height: 200px; background-image:url('{{ asset('images/abc2.png') }}')">
 
+    <div  style="overflow: scroll; position: relative; height: 1000px;">
 
+        <div  style="z-index: 1; position: relative; height: 200px; background-image:url('{{ asset('images/abc2.png') }}')">
 
         <br>
         <br>
@@ -47,18 +48,34 @@
 
 
 
-        <div  class="container-fluid">
-            <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
-                <br>
-                <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
-                &nbsp
-                <button class="button_test">ABOUT US </button>
-                &nbsp
-                <button class="button_test">SUPPORT </button>
+            <div  class="container-fluid">
+                <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
+                    <br>
+                    <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
+                    &nbsp
+                    <button class="button_test">ABOUT US </button>
+                    &nbsp
+                    <button class="button_test">SUPPORT </button>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5"></div>
+                <div style="font-family: 'Bungee', cursive; font-size:50pt; display: inline-block" class="col-sm-1">
+                    Shop
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10"></div>
+                <div class="col-sm-2">
+                    <a href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
+                </div>
+
             </div>
 
         </div>
-
 
 
         {% if error %}
@@ -74,31 +91,11 @@
 
 
 
-
-
-
-    <div class="row">
-        <div class="col-sm-5"></div>
-            <div style="font-family: 'Bungee', cursive; font-size:50pt; display: inline-block" class="col-sm-1">
-               Shop
-            </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-10"></div>
-            <div class="col-sm-2">
-              <a href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
-            </div>
-
-    </div>
-<br><br>
-
-
     {% for skateboard in skateboard %}
 
-        <div style="text-align: center;" class="col-sm-3">
+        <div  style="text-align: center;" class="col-sm-3">
            <a href ="{{ path("edit_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative">
-                <img   src="{{ asset('images/skt.JPG') }}">
+                <img class="image_object" src="{{ asset('images/skt.JPG') }}">
                 <br>
                 <div style="font-family: 'Open Sans Condensed', sans-serif;font-weight: 900;font-size: 14pt">   {{ skateboard.title }}</div>
                 <div style="font-family: 'Roboto', sans-serif;font-size: 12pt">  {{ skateboard.price }}€</div>
@@ -109,9 +106,6 @@
     {% endfor %}
 
     </div>
-
-
-
 
 
     <script>

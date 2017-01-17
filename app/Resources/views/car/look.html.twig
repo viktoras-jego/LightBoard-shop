@@ -37,20 +37,18 @@
         <br>
 
     <div id="wrapper">
-        <div class="row">
-            <div class="col-sm-3"></div>
-            <div style="font-family: 'Fira Sans Extra Condensed',cursive; font-weight: 400" class="col-sm-7">
-                <h1>Creation of the new product</h1>
+        <br>
+
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <div style="font-family: 'Open Sans Condensed', sans-serif;font-weight: 800;font-size: 14pt" class="col-sm-6">
+                    {{ product.title }}
+                </div>
             </div>
-        </div>
-
-
-
+        &nbsp <img class="photo_border"  src="{{ asset('images/skt.JPG') }}">
         <div id="container">
 
-            {{  form_start(forma)  }}
-            {{  form_widget(forma)  }}
-            {{  form_end(forma)  }}
+
 
 
         </div>
