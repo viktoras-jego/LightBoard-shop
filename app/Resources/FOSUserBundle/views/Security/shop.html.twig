@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Roboto:300" rel="stylesheet">
-
-
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:600|Roboto+Slab:700|Roboto:300,700" rel="stylesheet">
     <div  style="overflow: scroll; position: relative; height: 1000px;">
 
         <div  style="z-index: 1; position: relative; height: 200px; background-image:url('{{ asset('images/abc2.png') }}')">
@@ -51,11 +50,26 @@
             <div  class="container-fluid">
                 <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
                     <br>
+
+                    <form method="get" id="ByPriceForm">
+                       <select name="order" id="ByPriceFilter">
+                           <option value="Cheapest">Cheapest</option>
+                           <option value="Expensive">Most expensive</option>
+                       </select>
+                        <input type="submit" value="Filter">
+                    </form>
+
+
+
+
+
+
                     <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
                     &nbsp
                     <button class="button_test">ABOUT US </button>
                     &nbsp
                     <button class="button_test">SUPPORT </button>
+
                 </div>
 
             </div>
@@ -67,13 +81,16 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-sm-10"></div>
                 <div class="col-sm-2">
                     <a href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
                 </div>
 
+
             </div>
+
 
         </div>
 
@@ -94,11 +111,16 @@
     {% for skateboard in skateboard %}
 
         <div  style="text-align: center;" class="col-sm-3">
-           <a href ="{{ path("edit_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative">
-                <img class="image_object" src="{{ asset('images/skt.JPG') }}">
+           <a class="image_object" href ="{{ path("edit_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative;text-decoration: none;">
+                {# <img class="image_object" src="{{ asset('images/skt.JPG') }}"> #}
+                   {#{% for photo in skateboard.photos %}
+                    <img class="image_object" src="{{ photo.url }}">
+                   {% endfor %}#}
+                   <img class="image_object" src="{{ skateboard.photos[0].url }}">
+
                 <br>
-                <div style="font-family: 'Open Sans Condensed', sans-serif;font-weight: 900;font-size: 14pt">   {{ skateboard.title }}</div>
-                <div style="font-family: 'Roboto', sans-serif;font-size: 12pt">  {{ skateboard.price }}€</div>
+                <div class="image_title" style="font-family: 'Roboto Slab', serif;, sans-serif;font-weight: 900;font-size: 16pt">   {{ skateboard.title }}</div>
+                <div class="image_price" style="text-decoration: none; font-family: 'Roboto', sans-serif;font-size: 14pt">  {{ skateboard.price }}€</div>
                 <br>
             </div></a>
         </div>
@@ -129,6 +151,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
 
     <script src="{{ asset('js/shop.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    {% if orderValue is not null %}
+    $('#ByPriceFilter').val('{{ orderValue }}');
+    {% endif %}
+
+    $('#ByPriceFilter').change(function () {
+        $('#ByPriceForm').submit();
+
+    })
+
+</script>
 {% endblock %}
 
 {% block stylesheets %}

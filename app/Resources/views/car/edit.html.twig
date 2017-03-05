@@ -1,0 +1,193 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
+<script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<div style="position: relative; height: 1000px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+    <div  style="position: relative; width: 1800px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
+
+        <br>
+        <br>
+
+        {% if 'ROLE_USER' in user_roles%}
+
+            <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
+            <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+
+        {% endif %}
+
+        <div  class="container-fluid">
+            <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
+                <br>
+                <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
+                &nbsp
+                <button class="button_test">ABOUT US </button>
+                &nbsp
+                <button class="button_test">SUPPORT </button>
+            </div>
+
+        </div>
+        <br>
+
+    <div id="wrapper">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div style="font-family: 'Fira Sans Extra Condensed',cursive; font-weight: 400" class="col-sm-7">
+                <h1>Creation of the new product</h1>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+            <div class="container">
+
+              {#  {{  form_start(forma)  }}
+                {{  form_widget(forma)  }}
+                {{  form_end(forma)  }}
+                #}
+                <form id="form">
+                    <div class="panel-body">
+                        <div class="col-md-4 text-center">
+                            <img class="image_object" src="{{ product.photos[0].url }}" id="upload-demo" style="width:350px">
+                        </div>
+                        <button id="submit" type="submit">
+                            Do
+                        </button>
+                    </div>
+                </form>
+
+                <div>
+
+                    <input type="file" id="imgInp">
+
+                        <div class="image_object" style="width:350px">
+                        </div>
+
+
+
+
+                    <script type="text/javascript">
+
+
+                        var img = $('.image_object');
+                        var $uploadCrop = $('#upload-demo');
+                        $uploadCrop.croppie({
+
+                            enableExif: true,
+
+                            viewport: {
+
+                                width: 200,
+
+                                height: 280,
+
+                                type: 'square'
+
+                            },
+
+                            boundary: {
+
+                                width: 300,
+
+                                height: 300
+
+                            },
+
+                            update: function(res) {
+                                $uploadCrop.croppie('result', {type: 'html'}).
+                                        then(function (pic) {
+
+                                            img.html(pic);
+                                        });
+                            }
+
+                        });
+
+
+
+
+                        var myurl = "{{ product.photos[0].url }}";
+                        var myid = "{{ product.id}}";
+
+
+                        $('#form').on('submit', function() {
+                            var myarray = $uploadCrop.croppie('get');
+                            $.ajax({
+                                type: "POST",
+                                url : '{{ path('crop_image') }}',
+                                data : JSON.stringify({
+                                    payload: myarray,
+                                    photoid : myid,
+                                    photourl: myurl
+                                }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType : 'json'
+                            });
+
+                            return false;
+                        })
+
+
+
+
+                    </script>
+
+                </div>
+
+
+
+
+                </div>
+                </div>
+            </div>
+
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
+        h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
+        h1 { font-size: 36px; }
+        h2 { font-size: 21px; margin-bottom: 1em; }
+        p { margin: 0 0 1em 0; }
+        a { color: #0000F0; }
+        a:hover { text-decoration: none; }
+        code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+        #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
+        #container { padding: 2em; }
+        #welcome, #status { margin-bottom: 2em; }
+        #welcome h1 span { display: block; font-size: 75%; }
+        #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
+        #icon-book { display: none; }
+
+        @media (min-width: 768px) {
+            #wrapper { width: 80%; margin: 2em auto; }
+            #icon-book { display: inline-block; }
+            #status a, #next a { display: block; }
+
+            @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
+        }
+    </style>
+{% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/previewimg.js') }}"></script>
+    {% endblock %}

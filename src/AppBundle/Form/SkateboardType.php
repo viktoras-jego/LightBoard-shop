@@ -18,7 +18,7 @@ class SkateboardType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title',TextType::class,array('attr' => ['readonly' => true],))
+            ->add('title',TextType::class)
 
             ->add('category',ChoiceType::class, array(
                 'label' => 'Category',
@@ -38,12 +38,19 @@ class SkateboardType extends AbstractType
                 ),
                 'required'    => false,
             ))
+            ->add('img', FileType::class, [
+                'label' => ' ',
+                'mapped' => false,
+                "attr" => array(
+                    "multiple" => "multiple",
+                    'id' =>'imgInp'
+                )
 
+            ])
             ->add('save',SubmitType::class,array(
                 'label' => 'Create',
                 'attr' => array('style' => 'width: 100px')
             ))
-
             ->getForm()
         ;
 

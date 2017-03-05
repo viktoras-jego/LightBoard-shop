@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * CarRepository
@@ -10,18 +11,30 @@ namespace AppBundle\Repository;
  */
 class CarRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getActive(){
+    public function ByPrice(Request $request){
 
         $qb = $this->createQueryBuilder('c');
         $qb -> select('c');
-        $qb -> where('c.price=20');
+
+        if($request->query->has('order')){
+            $order = $request->query->get('order');
+
+            if($order == 'Cheapest'){
+                $qb -> orderBy('c.price','ASC');
+            }
+            elseif ($order == 'Expensive'){
+                $qb -> orderBy('c.price','DESC');
+            }
+
+
+        }
+
 
         return $qb ->getQuery()->getResult();
 
-
     }
 
-    public function findByName($name){
+    public function Expensive($name){
 
         $qb = $this->createQueryBuilder('c');
         $qb -> select('c');

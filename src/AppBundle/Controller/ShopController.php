@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Cash;
+use AppBundle\Entity\Photos;
 use AppBundle\Entity\Produktas;
 use AppBundle\Entity\Shop;
 use AppBundle\Entity\Skateboard;
@@ -49,8 +50,8 @@ class ShopController extends Controller
             $form = $this->createForm(ShopType::class, $product);
             $form->handleRequest($request);
 
-            $repo = $this->getDoctrine()->getRepository('AppBundle:Skateboard');
-            $skateboard = $repo->findAll();
+            $repo = $this->getDoctrine()->getRepository('AppBundle:Skateboard')
+                ->ByPrice($request);
 
 
 
@@ -96,13 +97,15 @@ class ShopController extends Controller
                 'error' => $error,
                 'csrf_token' => $csrfToken,
                 'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
-                'skateboard'=>$skateboard,
+                'skateboard'=>$repo,
+                'orderValue' => $request->query->has('order') ? $request->query->get('order') : null,
             ));
         }
     }
 
 
     /**
+     *
      * @Route("/add",name="add_product")
      * @param Request $request
      * @return Response
@@ -134,8 +137,13 @@ class ShopController extends Controller
                 'required'    => false,
             ))
             ->add('img', FileType::class, [
-                'label' => 'img',
-                'mapped' => false
+                'label' => ' ',
+                'mapped' => false,
+                "attr" => array(
+                    "multiple" => "multiple",
+                    'id' =>'imgInp'
+                    )
+
             ])
             ->add('save',SubmitType::class,array(
                 'label' => 'Create',
@@ -194,12 +202,19 @@ class ShopController extends Controller
             $pms = json_decode($out,true);
             $url=$pms['data']['link'];
 
+
             if($pms && isset($pms['status']) && $pms['status'] == 200){
                 $em = $this ->getDoctrine()->getManager();
-
+                $em->persist($product);
+                $photo = new Photos();
+                $photo->setUrl($url);
+                $photo->setSkateboard($product);
+                $em->persist($photo);
                 $em->flush();
-                return $this->redirectToRoute('shop_page');
+
+                return $this->redirectToRoute('edit_skate', ['skateboard' => $product->getId()]);
             }else{
+
                 echo "<h2>There's a Problem</h2>";
                 echo $pms['data']['error'];
             }
@@ -231,15 +246,18 @@ class ShopController extends Controller
 
     public function editAction(Request $request, Skateboard $skateboard){
 
+
+
         $form = $this->createForm(SkateboardType::class, $skateboard);
         $form->handleRequest($request);
 
+
+
+
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
-
         $authErrorKey = Security::AUTHENTICATION_ERROR;
         $lastUsernameKey = Security::LAST_USERNAME;
-
         // get the error if any (works with forward and redirect -- see below)
         if ($request->attributes->has($authErrorKey)) {
             $error = $request->attributes->get($authErrorKey);
@@ -249,40 +267,24 @@ class ShopController extends Controller
         } else {
             $error = null;
         }
-
         if (!$error instanceof AuthenticationException) {
             $error = null; // The value does not come from the security component.
         }
-
         // last username entered by the user
         $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
-
         $csrfToken = $this->has('security.csrf.token_manager')
             ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
             : null;
-
         $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
 
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-
-
-
-            if($url!=""){
-                $em = $this ->getDoctrine()->getManager();
-
-                $em->flush();
-
-                return $this->redirectToRoute('shop_page');
-            }else{
-                echo "<h2>There's a Problem</h2>";
-                echo $pms['data']['error'];
-            }
-
-
+            $em = $this ->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('shop_page');
         }
-
-        return $this->render('shop.html.twig',[
+        return $this->render('car/edit.html.twig',[
             'product' => $skateboard,
             'forma'=> $form ->createView(),
             'edit' =>true,
@@ -291,6 +293,46 @@ class ShopController extends Controller
             'csrf_token' => $csrfToken,
             'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
         ]);
+
+    }
+    /**
+     * @Route ("/crop", name="crop_image")
+     * @param Request $request
+     * @return Response
+     */
+    public function cropAction(Request $request){
+
+        //$repo = $this->getDoctrine()->getRepository('AppBundle:Produktas');
+      //  $produktas = $repo->find(1);
+        $content = json_decode($request->getContent(), true);
+
+        dump($content);
+
+        $x = $content['payload']['points'][0];
+        $y = $content['payload']['points'][1];
+        $width = $content['payload']['points'][2];
+        $height = $content['payload']['points'][3];
+        $photoid = $content['photoid'];
+        $photourl = $content['photourl'];
+dump($x);
+        $im = imagecreatefrompng($photourl);
+
+        $im2 = imagecrop($im, [$x, $y, $width,$height]);
+        if ($im2 !== FALSE) {
+            imagepng($im2, 'example-cropped.png');
+        }
+
+
+
+        return $this->render('car/edit.html.twig',[
+
+        ]);
+
+
+
+
+
+
 
 
 

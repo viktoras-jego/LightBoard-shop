@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+<link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
+<script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
 <link href="https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
 <meta charset="utf-8">
@@ -46,15 +49,41 @@
 
 
 
-        <div id="container">
-
-            {{  form_start(forma)  }}
-            {{  form_widget(forma)  }}
-            {{  form_end(forma)  }}
 
 
-        </div>
-    </div>
+
+
+
+            <div class="container">
+
+
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        {{  form_start(forma)  }}
+                        {{  form_row(forma.title)  }}
+                        {{  form_row(forma.category)  }}
+                        {{  form_widget(forma.price)  }}
+                        {{  form_row(forma.description)  }}
+                        {{  form_widget(forma.img, {'id' : 'imgInp'})  }}
+                        <div class="img-preview">
+                            <img class="img-preview2"  id="blah" src="#" alt="Image">
+                        </div>
+                        <br>
+                        {{  form_widget(forma.save)  }}
+                        {{  form_end(forma)  }}
+                    </div>
+                </div>
+
+
+
+                </div>
+                </div>
+            </div>
+
+
+
 {% endblock %}
 
 {% block stylesheets %}
@@ -85,3 +114,7 @@
         }
     </style>
 {% endblock %}
+
+    {% block javascripts %}
+    <script src="{{ asset('js/previewimg.js') }}"></script>
+    {% endblock %}

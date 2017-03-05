@@ -61,6 +61,10 @@ class Skateboard
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Photos", mappedBy="skateboard")
+     */
+    private $photos;
 
     
 
@@ -169,5 +173,31 @@ class Skateboard
     public function getCategory()
     {
         return $this->category;
+    }
+
+   
+
+    /**
+     * Set url
+     *
+     * @param \AppBundle\Entity\Photos $url
+     *
+     * @return Skateboard
+     */
+    public function setUrl(\AppBundle\Entity\Photos $url = null)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return \AppBundle\Entity\Photos
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }

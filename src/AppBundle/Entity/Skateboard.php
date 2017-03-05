@@ -61,6 +61,10 @@ class Skateboard
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Photos", mappedBy="skateboard")
+     */
+    private $photos;
 
     
 
@@ -169,5 +173,72 @@ class Skateboard
     public function getCategory()
     {
         return $this->category;
+    }
+
+   
+
+    /**
+     * Set url
+     *
+     * @param \AppBundle\Entity\Photos $url
+     *
+     * @return Skateboard
+     */
+    public function setUrl(\AppBundle\Entity\Photos $url = null)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return \AppBundle\Entity\Photos
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add photo
+     *
+     * @param \AppBundle\Entity\Photos $photo
+     *
+     * @return Skateboard
+     */
+    public function addPhoto(\AppBundle\Entity\Photos $photo)
+    {
+        $this->photos[] = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Remove photo
+     *
+     * @param \AppBundle\Entity\Photos $photo
+     */
+    public function removePhoto(\AppBundle\Entity\Photos $photo)
+    {
+        $this->photos->removeElement($photo);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
     }
 }
