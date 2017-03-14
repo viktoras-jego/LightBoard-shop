@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Car
  *
- * @ORM\Table(name="skateboard")
+ * @ORM\Table(name="Skate_Shop")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CarRepository")
  */
 class Skateboard

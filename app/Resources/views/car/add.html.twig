@@ -61,21 +61,63 @@
                 <div class="row">
                     <div class="col-md-8">
 
-                        {{  form_start(forma)  }}
+                        {{  form_start(forma)   }}
                         {{  form_row(forma.title)  }}
                         {{  form_row(forma.category)  }}
                         {{  form_widget(forma.price)  }}
                         {{  form_row(forma.description)  }}
                         {{  form_widget(forma.img, {'id' : 'imgInp'})  }}
-                        <div class="img-preview">
-                            <img class="img-preview2"  id="blah" src="#" alt="Image">
-                        </div>
+
+
+                            <div class="panel-body">
+                                <div class="col-md-4 text-center">
+                                    <div class="image_object" id="upload-demo" style="width:350px"></div>
+                                </div>
+                            </div>
+
+                        <div>
+
                         <br>
-                        {{  form_widget(forma.save)  }}
+                        {{  form_widget(forma.save, {'id' : 'submit'})   }}
                         {{  form_end(forma)  }}
                     </div>
                 </div>
 
+
+
+
+                <script type="text/javascript">
+                    var $uploadCrop = $('#upload-demo');
+                    $uploadCrop.croppie({
+                        enableExif: true,
+                        viewport: {
+                            width: 200,
+                            height: 280,
+                            type: 'square'
+                        },
+                        boundary: {
+                            width: 300,
+                            height: 300
+                        }
+                    });
+
+                    $('#submit').click(function(){
+
+                        $uploadCrop.croppie('result', {type:'base64'}).then(function(res) {
+                            var res1 = res.replace(/^data:image\/(png|jpg);base64,/, "");
+                            $.ajax({
+                                type: "POST",
+                                url : '{{ path('crop_image') }}',
+                                data : JSON.stringify({
+                                    image: res1
+                                }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType : 'json'
+                            });
+
+                        });
+                    });
+                </script>
 
 
                 </div>

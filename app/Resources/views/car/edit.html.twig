@@ -16,14 +16,14 @@
         <br>
         <br>
 
-        {% if 'ROLE_USER' in user_roles%}
+       {# {% if 'user_roles' in user_roles%}
 
             <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
             <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
                 {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
             </a>
 
-        {% endif %}
+        {% endif %}#}
 
         <div  class="container-fluid">
             <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
@@ -62,7 +62,7 @@
                 <form id="form">
                     <div class="panel-body">
                         <div class="col-md-4 text-center">
-                            <img class="image_object" src="{{ product.photos[0].url }}" id="upload-demo" style="width:350px">
+                            <div class="image_object" id="upload-demo" style="width:350px"></div>
                         </div>
                         <button id="submit" type="submit">
                             Do
@@ -74,76 +74,62 @@
 
                     <input type="file" id="imgInp">
 
-                        <div class="image_object" style="width:350px">
-                        </div>
 
 
 
 
                     <script type="text/javascript">
-
-
-                        var img = $('.image_object');
                         var $uploadCrop = $('#upload-demo');
                         $uploadCrop.croppie({
-
                             enableExif: true,
-
                             viewport: {
-
                                 width: 200,
-
                                 height: 280,
-
                                 type: 'square'
-
                             },
-
                             boundary: {
-
                                 width: 300,
-
                                 height: 300
-
-                            },
-
-                            update: function(res) {
-                                $uploadCrop.croppie('result', {type: 'html'}).
-                                        then(function (pic) {
-
-                                            img.html(pic);
-                                        });
                             }
-
                         });
 
-
-
-
-                        var myurl = "{{ product.photos[0].url }}";
-                        var myid = "{{ product.id}}";
-
-
                         $('#form').on('submit', function() {
-                            var myarray = $uploadCrop.croppie('get');
-                            $.ajax({
-                                type: "POST",
-                                url : '{{ path('crop_image') }}',
-                                data : JSON.stringify({
-                                    payload: myarray,
-                                    photoid : myid,
-                                    photourl: myurl
-                                }),
-                                contentType: "application/json; charset=utf-8",
-                                dataType : 'json'
+
+                            $uploadCrop.croppie('result', {type:'base64'}).then(function(res) {
+                                var res1 = res.replace(/^data:image\/(png|jpg);base64,/, "");
+                                $.ajax({
+                                    type: "POST",
+                                    url : '{{ path('crop_image') }}',
+                                    data : JSON.stringify({
+                                        image: res1
+                                    }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType : 'json'
+                                });
+
                             });
-
+                           /*     $uploadCrop.croppie('result', {type:'base64'})
+                                        .then(function(res) {
+                                            $.ajax({
+                                                url: 'https://api.imgur.com/3/image',
+                                                type: 'post',
+                                                headers: {
+                                                    Authorization: 'd5bfa397cfd42db'
+                                                },
+                                                data: {
+                                                    image: res,
+                                                    type: 'base64'
+                                                },
+                                                dataType: 'json',
+                                                success: function(response) {
+                                                    if(response.success) {
+                                                        window.location = response.data.link;
+                                                    }
+                                                }
+                                        });
+                            });*/
                             return false;
-                        })
-
-
-
-
+                        });
                     </script>
 
                 </div>

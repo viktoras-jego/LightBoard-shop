@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:600|Roboto+Slab:700|Roboto:300,700" rel="stylesheet">
     <div  style="overflow: scroll; position: relative; height: 1000px;">
 
-        <div  style="z-index: 1; position: relative; height: 200px; background-image:url('{{ asset('images/abc2.png') }}')">
+        <div  style="z-index: 1; position: relative; height: 200px;">
 
         <br>
         <br>
@@ -116,7 +116,7 @@
                    {#{% for photo in skateboard.photos %}
                     <img class="image_object" src="{{ photo.url }}">
                    {% endfor %}#}
-                   <img class="image_object" src="{{ skateboard.photos[0].url }}">
+                   <img class="image_object" src="{{ skateboard.photos[0].url }}" style="height: 280px; width: 200px">
 
                 <br>
                 <div class="image_title" style="font-family: 'Roboto Slab', serif;, sans-serif;font-weight: 900;font-size: 16pt">   {{ skateboard.title }}</div>

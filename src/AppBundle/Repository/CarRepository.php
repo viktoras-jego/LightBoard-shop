@@ -21,6 +21,7 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
 
             if($order == 'Cheapest'){
                 $qb -> orderBy('c.price','ASC');
+                $qb->setMaxResults(1);
             }
             elseif ($order == 'Expensive'){
                 $qb -> orderBy('c.price','DESC');
@@ -29,6 +30,16 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
 
         }
 
+
+        return $qb ->getQuery()->getResult();
+
+    }
+
+    public function LastId(Request $request){
+        $qb = $this->createQueryBuilder('c');
+        $qb -> select('c');
+        $qb -> orderBy('c.id','DESC');
+        $qb ->setMaxResults(1);
 
         return $qb ->getQuery()->getResult();
 

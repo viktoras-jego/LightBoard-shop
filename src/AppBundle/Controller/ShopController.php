@@ -114,6 +114,9 @@ class ShopController extends Controller
     {
         $product = new Skateboard();
 
+
+
+
         // Create our form
         $form = $this -> createFormBuilder($product)
             ->add('title',TextType::class)
@@ -184,40 +187,15 @@ class ShopController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $filename = $form->get('img')->getData()->getPathname();
-            $client_id="d5bfa397cfd42db";
-            $handle = fopen($filename, "r");
-            $data = fread($handle, filesize($filename));
-            $pvars   = array('image' => base64_encode($data));
-            $timeout = 30;
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, 'https://api.imgur.com/3/image.json');
-            curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $pvars);
-            $out = curl_exec($curl);
-            curl_close ($curl);
-            $pms = json_decode($out,true);
-            $url=$pms['data']['link'];
 
 
-            if($pms && isset($pms['status']) && $pms['status'] == 200){
                 $em = $this ->getDoctrine()->getManager();
                 $em->persist($product);
-                $photo = new Photos();
-                $photo->setUrl($url);
-                $photo->setSkateboard($product);
-                $em->persist($photo);
                 $em->flush();
 
-                return $this->redirectToRoute('edit_skate', ['skateboard' => $product->getId()]);
-            }else{
 
-                echo "<h2>There's a Problem</h2>";
-                echo $pms['data']['error'];
-            }
+                return $this->redirectToRoute('crop_image');
+
 
 
 
@@ -226,6 +204,7 @@ class ShopController extends Controller
 
 
         return $this->render('car/add.html.twig',[
+                'id'=> $product->getId(),
                 'product' => $product,
                 'forma'=> $form ->createView(),
                 'edit' =>false,
@@ -302,31 +281,67 @@ class ShopController extends Controller
      */
     public function cropAction(Request $request){
 
-        //$repo = $this->getDoctrine()->getRepository('AppBundle:Produktas');
-      //  $produktas = $repo->find(1);
+
         $content = json_decode($request->getContent(), true);
 
-        dump($content);
-
-        $x = $content['payload']['points'][0];
-        $y = $content['payload']['points'][1];
-        $width = $content['payload']['points'][2];
-        $height = $content['payload']['points'][3];
-        $photoid = $content['photoid'];
-        $photourl = $content['photourl'];
-dump($x);
-        $im = imagecreatefrompng($photourl);
-
-        $im2 = imagecrop($im, [$x, $y, $width,$height]);
-        if ($im2 !== FALSE) {
-            imagepng($im2, 'example-cropped.png');
-        }
+        $image = $content['image'];
 
 
 
-        return $this->render('car/edit.html.twig',[
+if($image != null){
 
-        ]);
+                    $repository = $this->getDoctrine()
+                        ->getRepository('AppBundle:Skateboard');
+                    $query = $repository->createQueryBuilder('p')
+                        ->select('p.id')
+                        ->orderBy('p.id', 'DESC')
+                        ->getQuery();
+                     $product = $query->setMaxResults(1)->getOneOrNullResult();
+                     $id = $product['id'];
+
+                $em = $this->getDoctrine()->getManager();
+                $prod = $em->getRepository('AppBundle:Skateboard')->find($id);
+
+
+
+                $client_id="d5bfa397cfd42db";
+                $timeout = 30;
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, 'https://api.imgur.com/3/image.json');
+                curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
+                curl_setopt($curl, CURLOPT_POST, 1);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $image);
+                $out = curl_exec($curl);
+                curl_close ($curl);
+                $pms = json_decode($out,true);
+                $url=$pms['data']['link'];
+
+                $photo = new Photos();
+                $photo->setUrl($url);
+                $photo->setSkateboard($prod);
+                $em->persist($photo);
+                $em->flush();
+
+}
+/*
+               if($pms && isset($pms['status']) && $pms['status'] == 200){
+                   $em = $this ->getDoctrine()->getManager();
+                   $em->persist($product);
+                   $photo = new Photos();
+                   $photo->setUrl($url);
+                   $photo->setSkateboard($product);
+                   $em->persist($photo);
+                   $em->flush();
+
+                   return $this->redirectToRoute('edit_skate', ['skateboard' => $product->getId()]);
+               }else{
+
+                   echo "<h2>There's a Problem</h2>";
+                   echo $pms['data']['error'];
+               }*/
+        return $this->redirectToRoute('shop_page');
 
 
 
