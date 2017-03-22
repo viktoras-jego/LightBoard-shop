@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,19 +23,160 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
 
             if($order == 'Cheapest'){
                 $qb -> orderBy('c.price','ASC');
-                $qb->setMaxResults(1);
             }
             elseif ($order == 'Expensive'){
                 $qb -> orderBy('c.price','DESC');
             }
 
+        }
+
+        if($request->query->has('order2')){
+            $order2 = $request->query->get('order2');
+
+            if($order2 == 'more-10'){
+
+                $qb -> where('c.price>10');
+
+            }
+            elseif ($order2== 'more-20'){
+
+                $qb -> where('c.price>20');
+
+            }
+            elseif($order2 == 'more-30'){
+
+                $qb -> where('c.price>30');
+
+            }
+            elseif($order2 == 'more-50'){
+
+                $qb -> where('c.price>50');
+
+            }
+            elseif($order2 == 'more-100'){
+
+                $qb -> where('c.price>100');
+
+            }
+
+        }
+        if($request->query->has('order3')){
+            $order3 = $request->query->get('order3');
+
+            if($order3 == 'less-10'){
+
+                $qb -> andWhere('c.price<10');
+
+            }
+            elseif ($order3== 'less-20'){
+
+                $qb -> andWhere('c.price<20');
+
+            }
+            elseif($order3 == 'less-30'){
+
+                $qb -> andWhere('c.price<30');
+
+            }
+            elseif($order3 == 'less-50'){
+
+                $qb -> andWhere('c.price<50');
+
+            }
+            elseif($order3 == 'less-100'){
+
+                $qb -> andWhere('c.price<100');
+
+            }
 
         }
 
+        if($request->query->has('order4')){
+            $order4 = $request->query->get('order4');
+
+
+
+            if($order4 == 'Pennyboard'){
+
+                $qb -> andWhere("c.category = 'Pennyboard'");
+
+            }
+            elseif ($order4== 'Longboard'){
+                $qb -> andWhere("c.category = 'Longboard'");
+
+            }
+            elseif($order4 == 'Skateboard'){
+
+                $qb -> andWhere("c.category = 'Skateboard'");
+
+            }
+
+        }
+
+        $currentPage = $request->query->get('page');
+        if (!$currentPage || $currentPage < 0) {
+            $currentPage = 1;
+        }
+        $itemsPerPage = 12; //items in one page
+
+        $qb
+            ->setMaxResults($itemsPerPage)
+            ->setFirstResult(($currentPage-1)*$itemsPerPage);
+
+        $paginator = new Paginator($qb);
+        $pages = ceil(count($paginator) / $itemsPerPage);
+
+        if ($pages == 0){
+            $pages = 1;
+        }
+
+        $paginator->getQuery()->getResult();
+
+
+        return [
+           'query' => $qb ->getQuery()->getResult(),
+           'pages' => $pages
+        ];
+    }
+
+   /* public function MoreThan(Request $request){
+
+        $qb = $this->createQueryBuilder('c');
+        $qb -> select('c');
+
+
+        if($request->query->has('order2')){
+            $order2 = $request->query->get('order2');
+
+            if($order2 == 'more-10'){
+                $qb -> select('c');
+                $qb -> where('c.price>10');
+
+            }
+            elseif ($order2== 'more-20'){
+                $qb -> select('c');
+                $qb -> where('c.price>20');
+
+            }
+            elseif($order2 == 'more-30'){
+                $qb -> select('c');
+                $qb -> where('c.price>30');
+
+            }
+            elseif($order2 == 'more-50'){
+                $qb -> select('c');
+                $qb -> where('c.price>50');
+
+            }
+            elseif($order2 == 'more-100'){
+                $qb -> select('c');
+                $qb -> where('c.price>100');
+
+            }
+        }
 
         return $qb ->getQuery()->getResult();
-
-    }
+    }*/
 
     public function LastId(Request $request){
         $qb = $this->createQueryBuilder('c');

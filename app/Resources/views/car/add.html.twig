@@ -90,25 +90,38 @@
                     var $uploadCrop = $('#upload-demo');
                     $uploadCrop.croppie({
                         enableExif: true,
+                        enforceBoundary:false,
                         viewport: {
-                            width: 200,
-                            height: 280,
+                            width: 230,
+                            height: 300,
                             type: 'square'
                         },
                         boundary: {
-                            width: 300,
-                            height: 300
+                            width: 325,
+                            height: 325
                         }
                     });
+                    function makeid()
+                    {
+                        var text = "";
+                        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                        for( var i=0; i < 5; i++ )
+                            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                        return text;
+                    }
 
                     $('#submit').click(function(){
 
                         $uploadCrop.croppie('result', {type:'base64'}).then(function(res) {
                             var res1 = res.replace(/^data:image\/(png|jpg);base64,/, "");
+                            var randomStr = '{{ randomStr }}';
                             $.ajax({
                                 type: "POST",
                                 url : '{{ path('crop_image') }}',
                                 data : JSON.stringify({
+                                    randomStr: randomStr,
                                     image: res1
                                 }),
                                 contentType: "application/json; charset=utf-8",

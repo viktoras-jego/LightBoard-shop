@@ -26,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -52,8 +53,7 @@ class ShopController extends Controller
 
             $repo = $this->getDoctrine()->getRepository('AppBundle:Skateboard')
                 ->ByPrice($request);
-
-
+            $pages= $repo['pages'];
 
 
 
@@ -95,10 +95,15 @@ class ShopController extends Controller
                 'product' => null,
                 'last_username' => $lastUsername,
                 'error' => $error,
+                'pages' => $pages,
                 'csrf_token' => $csrfToken,
                 'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
-                'skateboard'=>$repo,
+                'skateboard'=>$repo['query'],
                 'orderValue' => $request->query->has('order') ? $request->query->get('order') : null,
+                'moreThan' => $request->query->has('order2') ? $request->query->get('order2') : null,
+                'lessThan' => $request->query->has('order3') ? $request->query->get('order3') : null,
+                'category' => $request->query->has('order4') ? $request->query->get('order4') : null,
+                'page' => $request->query->has('page') ? $request->query->get('page') : 1,
             ));
         }
     }
@@ -113,7 +118,6 @@ class ShopController extends Controller
     public function addAction(Request $request)
     {
         $product = new Skateboard();
-
 
 
 
@@ -139,6 +143,7 @@ class ShopController extends Controller
                 ),
                 'required'    => false,
             ))
+            ->add('randomString',HiddenType::class)
             ->add('img', FileType::class, [
                 'label' => ' ',
                 'mapped' => false,
@@ -193,18 +198,16 @@ class ShopController extends Controller
                 $em->persist($product);
                 $em->flush();
 
-
-                return $this->redirectToRoute('crop_image');
-
-
-
-
+            return $this->redirectToRoute('shop_page');
         }
+        $randomStr = $this ->get('Token_Generator')->generateRandomString();
+        $form->get('randomString')->setData($randomStr);
 
 
 
         return $this->render('car/add.html.twig',[
                 'id'=> $product->getId(),
+                'randomStr'=> $randomStr,
                 'product' => $product,
                 'forma'=> $form ->createView(),
                 'edit' =>false,
@@ -285,22 +288,17 @@ class ShopController extends Controller
         $content = json_decode($request->getContent(), true);
 
         $image = $content['image'];
-
-
+        $randomStr2 = $content['randomStr'];
+        dump($randomStr2);
 
 if($image != null){
 
-                    $repository = $this->getDoctrine()
-                        ->getRepository('AppBundle:Skateboard');
-                    $query = $repository->createQueryBuilder('p')
-                        ->select('p.id')
-                        ->orderBy('p.id', 'DESC')
-                        ->getQuery();
-                     $product = $query->setMaxResults(1)->getOneOrNullResult();
-                     $id = $product['id'];
+
 
                 $em = $this->getDoctrine()->getManager();
-                $prod = $em->getRepository('AppBundle:Skateboard')->find($id);
+                $prod = $em->getRepository('AppBundle:Skateboard')->findOneBy([
+                    'randomString'=> $randomStr2
+                ]);
 
 
 

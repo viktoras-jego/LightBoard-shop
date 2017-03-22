@@ -43,6 +43,14 @@ class Skateboard
 
     private $category;
 
+    /**
+     * @var = string
+     *
+     * @ORM\Column(name="random_string", type="string",length=255,nullable=true)
+     */
+
+    private $randomString;
+
 
 //-------------------------------------------------------------
     /**
@@ -240,5 +248,29 @@ class Skateboard
     public function getPhotos()
     {
         return $this->photos;
+    }
+
+    /**
+     * Set randomString
+     *
+     * @param string $randomString
+     *
+     * @return Skateboard
+     */
+    public function setRandomString($randomString)
+    {
+        $this->randomString = $randomString;
+
+        return $this;
+    }
+
+    /**
+     * Get randomString
+     *
+     * @return string
+     */
+    public function getRandomString()
+    {
+        return $this->randomString;
     }
 }

@@ -6,15 +6,104 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:600|Roboto+Slab:700|Roboto:300,700" rel="stylesheet">
-    <div  style="overflow: scroll; position: relative; height: 1000px;">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:600|Open+Sans:600|Fira+Sans:300i,500i|Indie+Flower|Roboto+Slab:700|Roboto:300,700|Lato:700|Raleway:600" rel="stylesheet">
 
-        <div  style="z-index: 1; position: relative; height: 200px;">
+    <div>
+        <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <a style="text-decoration: none" href="{{ path("car_index") }}">
+                        <div class="nav-logo">
+                            <img id="light" class="navbar-logo" src="{{ asset('images/lb5.jpg') }}">
+                            <img id="board" class="navbar-logo2" src="{{ asset('images/lb4.jpg') }}">
+                        </div>
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ path("shop_page") }}">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
 
-        <br>
-        <br>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <div class="shop-title" style="text-align: center;">
+            <div  style="font-size: 65px;font-family: 'Fira Sans', sans-serif; height: 75px">
+               <p id="shop-text">Shop.</p>
+            </div>
+            <div style="overflow: hidden;font-size: 45px;font-family: 'Fira Sans', sans-serif;font-weight: 300; height: 80px;">
+              <header>
+                <p style="display: inline-block;" id="fast-text">Fast.</p>
+                <p style="display: inline-block;" id="easy-text">Easy.</p>
+                <p style="display: inline-block;" id="convenient-text">Convenient.</p>
+              </header>
+            </div>
+        </div>
 
-        {% if 'ROLE_USER' in user_roles%}
+
+        <div class="row">
+            <div class="col-sm-10"></div>
+            <div class="col-sm-2">
+                <a href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
+            </div>
+
+
+        </div>
+
+        <form style="display: inline" method="get" id="ByPriceForm">
+        <div class="shop-box col-md-12" style="z-index: 1;background: white" align="center">
+
+            <div class="filter-bar" style="padding-bottom: 70px;padding-top: 45px" align="left">
+                <div class="col-md-1"></div>
+                    <div style="display: inline" class="custom-select">
+                        <span style="font-family: 'Source Sans Pro', sans-serif; font-size: 15px"> Price: &nbsp</span>
+
+                        <select class="select-filter" name="order" id="ByPriceFilter" title="Price from" value="{{ orderValue }}">
+                            <option>From</option>
+                            <option value="Cheapest">Cheapest</option>
+                            <option value="Expensive">Expensive</option>
+                        </select>
+
+                        <select class="select-filter" name="order2" id="MoreThan" title="More than" value="{{ moreThan }}">
+                            <option>More than</option>
+                            <option value="more-10">10 €</option>
+                            <option value="more-20">20 €</option>
+                            <option value="more-30">30 €</option>
+                            <option value="more-50">50 €</option>
+                            <option value="more-100">100 €</option>
+                        </select>
+
+                        <select class="select-filter" name="order3" id="LessThan" title="Less than" value="{{ lessThan }}">
+                            <option>Less than</option>
+                            <option value="less-10">10 €</option>
+                            <option value="less-20">20 €</option>
+                            <option value="less-30">30 €</option>
+                            <option value="less-50">50 €</option>
+                            <option value="less-100">100 €</option>
+                        </select>
+                        <span style="font-family: 'Source Sans Pro', sans-serif; font-size: 15px"> &nbsp &nbsp Category: &nbsp</span>
+                        <select class="select-filter" name="order4" id="Category" title="Category" value="{{ category }}">
+                            <option>Select category</option>
+                            <option value="Pennyboard">Pennyboard</option>
+                            <option value="Longboard">Longboard</option>
+                            <option value="Skateboard">Skateboard</option>
+                        </select>
+                        <div class="page-numbers" style="text-align: right;display: inline">
+                        {% for p in 1..pages %}
+                        <button id="page-{{ p }}" type="submit" name="page" value="{{ p }}" {%  if p == page %} class="btn-page-active" {%  endif %} {% if p != page %} class="btn-page" {% endif %}>{{ p }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+            </div>
+
+
+
+            {#{% if 'ROLE_USER' in user_roles%}
 
             <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
             <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
@@ -22,9 +111,6 @@
             </a>
 
         {% endif %}
-
-
-
         {% if  user_roles is null %}
             <div  style=" position: absolute">
                 <br>
@@ -44,56 +130,35 @@
                 <button  id="login1" type="button" style=" text-align: right" class="button_test">Login </button>
             </nav>
         {% endif %}
+        #}
 
 
 
-            <div  class="container-fluid">
-                <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
-                    <br>
+            {% for skateboard in skateboard %}
 
-                    <form method="get" id="ByPriceForm">
-                       <select name="order" id="ByPriceFilter">
-                           <option value="Cheapest">Cheapest</option>
-                           <option value="Expensive">Most expensive</option>
-                       </select>
-                        <input type="submit" value="Filter">
-                    </form>
+                <div  style="text-align: center;" class="col-sm-3">
+                    <a class="image_object" href ="{{ path("edit_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative;text-decoration: none;">
+                            {# <img class="image_object" src="{{ asset('images/skt.JPG') }}"> #}
+                            {#{% for photo in skateboard.photos %}
+                             <img class="image_object" src="{{ photo.url }}">
+                            {% endfor %}#}
+                            <img class="image_object" src="{{ skateboard.photos[0].url }}" style="height: 225px; width: 155px">
 
-
-
-
-
-
-                    <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
-                    &nbsp
-                    <button class="button_test">ABOUT US </button>
-                    &nbsp
-                    <button class="button_test">SUPPORT </button>
-
+                            <br>
+                            <div class="image_title" style="font-family: 'Raleway', sans-serif;font-weight: 300;font-size: 12pt">   {{ skateboard.title }}</div>
+                            <div class="image_price" style="text-decoration: none; font-family: 'Roboto', sans-serif;font-size: 11pt">  {{ skateboard.price }}€</div>
+                            <br>
+                        </div></a>
                 </div>
 
-            </div>
-
-            <div class="row">
-                <div class="col-sm-5"></div>
-                <div style="font-family: 'Bungee', cursive; font-size:50pt; display: inline-block" class="col-sm-1">
-                    Shop
-                </div>
-            </div>
+            {% endfor %}
 
 
-            <div class="row">
-                <div class="col-sm-10"></div>
-                <div class="col-sm-2">
-                    <a href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
-                </div>
 
-
-            </div>
 
 
         </div>
-
+        </form>
 
         {% if error %}
             <div class="flash-notice">
@@ -106,47 +171,8 @@
 
 
 
-
-
-    {% for skateboard in skateboard %}
-
-        <div  style="text-align: center;" class="col-sm-3">
-           <a class="image_object" href ="{{ path("edit_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative;text-decoration: none;">
-                {# <img class="image_object" src="{{ asset('images/skt.JPG') }}"> #}
-                   {#{% for photo in skateboard.photos %}
-                    <img class="image_object" src="{{ photo.url }}">
-                   {% endfor %}#}
-                   <img class="image_object" src="{{ skateboard.photos[0].url }}" style="height: 280px; width: 200px">
-
-                <br>
-                <div class="image_title" style="font-family: 'Roboto Slab', serif;, sans-serif;font-weight: 900;font-size: 16pt">   {{ skateboard.title }}</div>
-                <div class="image_price" style="text-decoration: none; font-family: 'Roboto', sans-serif;font-size: 14pt">  {{ skateboard.price }}€</div>
-                <br>
-            </div></a>
-        </div>
-
-    {% endfor %}
-
     </div>
 
-
-    <script>
-
-        setTimeout(function () {
-            $( ".flash-notice" ).fadeOut();
-        }, 2850);
-
-
-        slideTimer = setTimeout(function() {
-            var elm = $("#div1");
-            console.log(elm);
-            elm.animate({
-                top:"0px"
-
-            }, 1500);
-        }, 300);
-
-    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
 
@@ -155,13 +181,34 @@
 
 {% block javascripts %}
 <script>
+
     {% if orderValue is not null %}
     $('#ByPriceFilter').val('{{ orderValue }}');
     {% endif %}
 
-    $('#ByPriceFilter').change(function () {
-        $('#ByPriceForm').submit();
+    {% if moreThan is not null %}
+    $('#MoreThan').val('{{ moreThan }}');
+    {% endif %}
 
+    {% if lessThan is not null %}
+    $('#LessThan').val('{{ lessThan }}');
+    {% endif %}
+
+    {% if category is not null %}
+    $('#Category').val('{{ category }}');
+    {% endif %}
+
+    $('#ByPriceFilter').change(function () {
+        document.getElementById("ByPriceForm").submit();
+    })
+    $('#MoreThan').change(function () {
+        document.getElementById("ByPriceForm").submit();
+    })
+    $('#LessThan').change(function () {
+        document.getElementById("ByPriceForm").submit();
+    })
+    $('#Category').change(function () {
+        document.getElementById("ByPriceForm").submit();
     })
 
 </script>

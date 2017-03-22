@@ -7,6 +7,7 @@ services:
     app.math:
         class: AppBundle\Service\MathService
         arguments: ["@doctrine.orm.entity_manager"]
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    Token_Generator:
+        class: AppBundle\Service\TokenGenerator
+

@@ -7,12 +7,47 @@ CSSPlugin.defaultSmoothOrigin = true;
 
 (function() {
     var abc1 = 1;
-
     var abc = new TimelineMax({})
+    var logo = new TimelineMax({})
     var sid = new TimelineMax({paused:true})
     var playBtn = document.getElementById("login1");
     var login = document.getElementById("log");
     var sidebar = document.getElementById("sidebar");
+    var light = document.getElementById("light");
+    var board = document.getElementById("board");
+    var shop = document.getElementById("shop-text");
+    var fast = document.getElementById("fast-text");
+    var easy = document.getElementById("easy-text");
+    var convenient = document.getElementById("convenient-text");
+
+    var tl = new TimelineMax({});
+    tl.to(fast, 0, {
+        y: 100
+    });
+    tl.to(easy, 0, {
+        y: 100
+    });
+    tl.to(convenient, 0, {
+        y: 100
+    });
+    tl.to(fast, 0.6, {
+        y: 100
+    });
+    tl.to(fast, 0.6, {
+        y: 0
+    });
+    tl.to(easy, 0.6, {
+        y: 0
+    });
+    tl.to(convenient, 0.6, {
+        y: 0
+    });
+
+
+
+    logo.to(board, 0, {
+        x: -63,
+    });
 
 
     $(".image_object").hover(over, out);
@@ -26,9 +61,21 @@ CSSPlugin.defaultSmoothOrigin = true;
     }
 
 
+    $(".nav-logo").hover(over2, out2);
 
+    function over2(){
+        TweenMax.to(board, 1.3,{
+            x:-1,
+            ease: Power4. easeOut,
+        })
+    }
 
-
+    function out2(){
+        TweenMax.to(board, 1.3, {
+            x:-63,
+            ease: Power4. easeOut,
+        })
+    }
 
 
     if(playBtn) {
@@ -67,91 +114,8 @@ CSSPlugin.defaultSmoothOrigin = true;
                 console.log(abc1);
             }
 
-
-
         }
 
     }
-
-
-    var tl = new TimelineMax({
-
-    });
-    var at = new TimelineMax({
-
-    });
-
-
-
-
-    at.to(".logo1",0,{
-
-        rotation: 135.3,
-        right:1,
-        x:38,
-        y:20
-    });
-
-
-
-    tl.to(".logo",0,{
-
-        x:-46.8,
-        y:18,
-        rotation: -44.8,
-        left:1
-    });
-
-    at.from(".logo1",0.7,{
-        ease: Power1. easeIn,
-        opacity:0,
-        right:800,
-        rotation: 0,
-        delay:0.5
-    });
-
-    tl.from(".logo",0.7,{
-        ease: Power1. easeIn,
-        opacity:0,
-        left:800,
-        rotation: 0,
-        delay:0.5
-    });
-
-    at.to(".logo1",1.5,{
-        ease: Power3. easeOut,
-        rotation:720,
-
-
-    });
-
-
-
-    tl.to(".logo",1.5,{
-        ease: Power3. easeOut,
-        rotation: 540,
-
-    });
-    tl.to(".logo",1,{
-        ease: Power3. easeOut,
-        left:19,
-        top:18,
-    });
-
-
-
-
-    at.to(".logo1",2,{
-        ease: Power3. easeOut,
-        rotation:720,
-    });
-    at.to(".logo1",1,{
-        ease: Power3. easeOut,
-        right:19,
-        bottom:18,
-        delay:-2
-    });
-
-
 
 })()
