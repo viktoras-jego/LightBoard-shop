@@ -15,7 +15,7 @@
                 })
                 $uploadCrop.croppie('result', {type:'base64'}).then(function(res) {
                     var res1 = res.replace(/^data:image\/(png|jpg);base64,/, "");
-                    console.log(res1);
+
                     });
 
             }
@@ -25,7 +25,7 @@
     }
 
     $("#imgInp").change(function(){
-        console.log('imginp');
+
         readURL(this);
     });
 })();

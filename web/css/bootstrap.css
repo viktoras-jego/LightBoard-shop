@@ -1088,7 +1088,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  background-color: #ededed;
+  background-color: #ebebeb;
   padding-top: 70px;
 }
 input,
@@ -2511,9 +2511,8 @@ legend {
 }
 label {
   display: inline-block;
-  max-width: 100%;
-  margin-bottom: 5px;
-  font-weight: bold;
+  width: 210px;
+  text-align: right;
 }
 input[type="search"] {
   -webkit-box-sizing: border-box;
@@ -3166,23 +3165,85 @@ fieldset[disabled] a.btn {
   text-align: left;
   min-height: 190px;
 }
+.one-order-field{
+  width: 300px;
+  margin-bottom: -2px
+}
+.order-box1{
+  border: solid rgba(0, 0, 0, 0.39) 2px;
+  margin-bottom: 15px;
+  border-radius: 3px;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+.order-photo{
+  position: absolute;
+  text-align: center;
+  left: 42%;
+}
+.customer-info1{
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+  color: #3a3a3a;
+  font-family: 'Merriweather', serif;
+  font-size: 14px;
+}
+.customer-info2{
+  text-align: left;
+  color: black;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+ }
+.button_buy {
 
+  border-radius:1px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  background: transparent;
+  color: #000000;
+  font-size: 15px;
+  padding: 6px;
+  border: solid rgb(0, 0, 0) 2px;
+  text-decoration: none;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.button_buy:hover {
+  background: #e0e0e0;
+  text-decoration: none;
+}
+li:hover{
+  background: #ebebeb;
+}
 .button_test {
 
-    border-radius:4px;
-    font-family: Arial;
+    border-radius:1px;
+    font-family: 'Lato', sans-serif;
     font-weight: 800;
-    background: #ffffff;
+    background: transparent;
     color: #000000;
     font-size: 15px;
-    padding: 8px 20px 8px 20px;
+    padding: 6px;
     border: solid rgb(0, 0, 0) 2px;
     text-decoration: none;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .button_test:hover {
     background: #e0e0e0;
     text-decoration: none;
+}
+.vertical-line{
+  width: 1px; /* Line width */
+  background-color: black; /* Line color */
+  height: 100%; /* Override in-line if you want specific height. */
+  float: left; /* Causes the line to float to left of content.
+        You can instead use position:absolute or display:inline-block
+        if this fits better with your design */
 }
 .photo_border{
 
@@ -4374,9 +4435,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
  }
 .navbar {
   position: relative;
-  min-height: 55px;
+  height: 55px;
   margin-bottom: 20px;
-  border: 1px solid transparent;
+
 }
 @media (min-width: 768px) {
   .navbar {

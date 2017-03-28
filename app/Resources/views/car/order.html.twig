@@ -1,0 +1,242 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600" rel="stylesheet">
+
+
+    <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a style="text-decoration: none" href="{{ path("car_index") }}">
+                    <div class="nav-logo">
+                        <img id="light" class="navbar-logo" src="{{ asset('images/lb5.jpg') }}">
+                        <img id="board" class="navbar-logo2" src="{{ asset('images/lb4.jpg') }}">
+                    </div>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-md-6"></div>
+            <div style="padding-left: 4em" class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
+                <ul style="height: 10px" class="nav navbar-nav">
+                    {% if 'ROLE_USER' in user_roles%}
+                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("order_skate") }}">Orders</a></li>
+                    {% endif %}
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+
+
+
+
+        {#  <div class="shop-box col-md-12" style="z-index: 1;background: white" align="center">
+
+             <div class="filter-bar" style="padding-bottom: 70px;padding-top: 45px" align="left">
+                 <div class="col-md-1"></div>
+
+                     <div style="display: inline" class="custom-select">
+                         <form style="display: inline" method="get" id="ByPriceForm">
+                         <span style="font-family: 'Source Sans Pro', sans-serif; font-size: 15px"> Price: &nbsp</span>
+
+                         <select class="select-filter" name="order" id="ByPriceFilter" title="Price from" value="{{ orderValue }}">
+                             <option>From</option>
+                             <option value="Cheapest">Cheapest</option>
+                             <option value="Expensive">Expensive</option>
+                         </select>
+
+                         <select class="select-filter" name="order2" id="MoreThan" title="More than" value="{{ moreThan }}">
+                             <option>More than</option>
+                             <option value="more-10">10 €</option>
+                             <option value="more-20">20 €</option>
+                             <option value="more-30">30 €</option>
+                             <option value="more-50">50 €</option>
+                             <option value="more-100">100 €</option>
+                         </select>
+
+                         <select class="select-filter" name="order3" id="LessThan" title="Less than" value="{{ lessThan }}">
+                             <option>Less than</option>
+                             <option value="less-10">10 €</option>
+                             <option value="less-20">20 €</option>
+                             <option value="less-30">30 €</option>
+                             <option value="less-50">50 €</option>
+                             <option value="less-100">100 €</option>
+                         </select>
+                         <span style="font-family: 'Source Sans Pro', sans-serif; font-size: 15px"> &nbsp &nbsp Category: &nbsp</span>
+                         <select class="select-filter" name="order4" id="Category" title="Category" value="{{ category }}">
+                             <option>Select category</option>
+                             <option value="Pennyboard">Pennyboard</option>
+                             <option value="Longboard">Longboard</option>
+                             <option value="Skateboard">Skateboard</option>
+                         </select>
+                         <div class="page-numbers" style="text-align: right;display: inline; padding-left: 4em">
+
+
+
+                         {% for p in pagefirst..pages %}
+                         <button id="page-{{ p }}" type="submit" name="page" value="{{ p }}" {%  if p == page %} class="btn-page-active" {%  endif %} {% if p != page %} class="btn-page" {% endif %}>{{ p }}</button>
+                             {% endfor %}
+                         </div>
+                         </form>
+                         {% if 'ROLE_USER' in user_roles%}
+                                 <a style="padding-left: 32em" href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
+                         {% endif %}
+
+                     </div>
+             </div>
+
+
+             {#{% if 'ROLE_USER' in user_roles%}
+
+             <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
+             <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
+                 {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+             </a>
+
+         {% endif %}
+         {% if  user_roles is null %}
+             <div  style=" position: absolute">
+                 <br>
+
+                 <div id="sidebar" style="position: fixed; width: 230px;height: 1000px; background: rgba(255, 255, 255, 0.60)" class="col-sm-3 col-md-2 sidebar">
+                 </div>
+                 <br><br><br><br><br><br><br><br>
+                 <div style="position: relative" id="log">
+
+                     {{ include('FOSUserBundle:Security:login_content.html.twig') }}
+                 </div>
+             </div>
+
+             <nav style="width: 300px" class="navbar navbar-fixed-top">
+                 <br>
+                 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                 <button  id="login1" type="button" style=" text-align: right" class="button_test">Login </button>
+             </nav>
+         {% endif %}
+         #}
+
+        <div class="col-sm-1"></div>
+        <div class="row">
+        <div style="background: white;padding-top: 10px" class="col-sm-5">
+
+                {% for skateboard in skateboard %}
+                        <div class="order-box1">
+                            <div class="order-photo">
+                                <div>
+                                    <a href="#">
+                                        <img src="{{ skateboard.photos }}" style="position: fixed;;height: 140px; width: 103px">
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                               <div class="one-order-field">
+                                <span class="customer-info1">First name:</span>
+                                    <span class="customer-info2"> {{ skateboard.firstName }}</span>
+                               </div>
+                               <div class="one-order-field">
+                                <span class="customer-info1">Last name:</span>
+                                    <span class="customer-info2"> {{ skateboard.lastName }}</span>
+                               </div>
+                                <div class="one-order-field">
+                                <span class="customer-info1">Address:</span>
+                                    <span class="customer-info2"> {{ skateboard.address }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                <span class="customer-info1">City:</span>
+                                    <span class="customer-info2"> {{ skateboard.city }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                <span class="customer-info1">Country:</span>
+                                    <span class="customer-info2"> {{ skateboard.country }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                <span class="customer-info1">Postal code:</span>
+                                    <span class="customer-info2"> {{ skateboard.postcode }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                <span class="customer-info1">Email:</span>
+                                    <span class="customer-info2"> {{ skateboard.email }}</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                {% endfor %}
+            </div>
+
+
+        <div class="col-sm-1"></div>
+
+            <div style="background: white" class="col-sm-4">
+                {% for skateboard in skateboard %}
+                       <div> {{ skateboard.firstName }} </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {% if error %}
+            <div class="flash-notice">
+                <center>  <div style="width: 400px" class="alert alert-danger fade in">
+                        <strong>Invalid Username/Password</strong>
+                    </div></center>
+            </div>
+        {% endif %}
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="{{ asset('js/navbaranimation.js') }}"></script>
+{% endblock %}
+
+
+
+{% block stylesheets %}
+    <style>
+       body { background: #F5F5F5; font: 20px/1.5 sans-serif; }
+       a {text-decoration: none}
+       h1, h2, h6 { line-height: 1.2; margin: 0 0 .0em; }
+        h1 { font-size: 20px; }
+        h2 { font-size: 21px; margin-bottom: 1em; }
+
+        p { margin: 0 0 1em 0; }
+        a { color: #000000; }
+        a:hover { text-decoration: none; }
+       code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+        #wrapper { background: #FFF; margin: 1em auto; max-width: 500px; width: 95%; }
+        #container { padding: 2em; }
+        #welcome, #status { margin-bottom: 2em; }
+        #welcome h1 span { display: block; font-size: 75%; }
+        #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
+        #icon-book { display: none; }
+
+        @media (min-width: 568px) {
+            #wrapper { width: 80%; margin: 2em auto; }
+            #icon-book { display: inline-block; }
+            #status a, #next a { display: block; }
+
+            @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+            .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
+        }
+    </style>
+{% endblock %}
+
+

@@ -16,14 +16,14 @@
         <br>
         <br>
 
-       {# {% if 'user_roles' in user_roles%}
+        {% if 'ROLE_USER' in user_roles%}
 
             <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
             <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
                 {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
             </a>
 
-        {% endif %}#}
+        {% endif %}
 
         <div  class="container-fluid">
             <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
@@ -38,13 +38,13 @@
         </div>
         <br>
 
-    <div id="wrapper">
-        <div class="row">
-            <div class="col-sm-3"></div>
-            <div style="font-family: 'Fira Sans Extra Condensed',cursive; font-weight: 400" class="col-sm-7">
-                <h1>Creation of the new product</h1>
+        <div id="wrapper">
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div style="font-family: 'Fira Sans Extra Condensed',cursive; font-weight: 400" class="col-sm-7">
+                    <h1>Creation of the new product</h1>
+                </div>
             </div>
-        </div>
 
 
 
@@ -55,25 +55,32 @@
 
             <div class="container">
 
-              {#  {{  form_start(forma)  }}
-                {{  form_widget(forma)  }}
-                {{  form_end(forma)  }}
-                #}
-                <form id="form">
-                    <div class="panel-body">
-                        <div class="col-md-4 text-center">
-                            <div class="image_object" id="upload-demo" style="width:350px"></div>
+
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        {{  form_start(forma)   }}
+                        {{  form_row(forma.title)  }}
+                        {{  form_row(forma.category)  }}
+                        {{  form_widget(forma.price)  }}
+                        {{  form_row(forma.description)  }}
+                        {{  form_widget(forma.img, {'id' : 'imgInp'})  }}
+
+
+                        <div class="panel-body">
+                            <div class="col-md-4 text-center">
+                                <div class="image_object" id="upload-demo" style="width:350px"></div>
+                            </div>
                         </div>
-                        <button id="submit" type="submit">
-                            Do
-                        </button>
+
+                        <div>
+
+                            <br>
+                            {{  form_widget(forma.save, {'id' : 'submit'})   }}
+                            {{  form_end(forma)  }}
+                        </div>
                     </div>
-                </form>
-
-                <div>
-
-                    <input type="file" id="imgInp">
-
 
 
 
@@ -82,25 +89,38 @@
                         var $uploadCrop = $('#upload-demo');
                         $uploadCrop.croppie({
                             enableExif: true,
+                            enforceBoundary:false,
                             viewport: {
-                                width: 200,
-                                height: 280,
+                                width: 230,
+                                height: 300,
                                 type: 'square'
                             },
                             boundary: {
-                                width: 300,
-                                height: 300
+                                width: 325,
+                                height: 325
                             }
                         });
+                        function makeid()
+                        {
+                            var text = "";
+                            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-                        $('#form').on('submit', function() {
+                            for( var i=0; i < 5; i++ )
+                                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                            return text;
+                        }
+
+                        $('#submit').click(function(){
 
                             $uploadCrop.croppie('result', {type:'base64'}).then(function(res) {
                                 var res1 = res.replace(/^data:image\/(png|jpg);base64,/, "");
+                                var randomStr = '{{ randomStr }}';
                                 $.ajax({
                                     type: "POST",
                                     url : '{{ path('crop_image') }}',
                                     data : JSON.stringify({
+                                        randomStr: randomStr,
                                         image: res1
                                     }),
                                     contentType: "application/json; charset=utf-8",
@@ -108,40 +128,13 @@
                                 });
 
                             });
-                           /*     $uploadCrop.croppie('result', {type:'base64'})
-                                        .then(function(res) {
-                                            $.ajax({
-                                                url: 'https://api.imgur.com/3/image',
-                                                type: 'post',
-                                                headers: {
-                                                    Authorization: 'd5bfa397cfd42db'
-                                                },
-                                                data: {
-                                                    image: res,
-                                                    type: 'base64'
-                                                },
-                                                dataType: 'json',
-                                                success: function(response) {
-                                                    if(response.success) {
-                                                        window.location = response.data.link;
-                                                    }
-                                                }
-                                        });
-                            });*/
-                            return false;
                         });
                     </script>
 
-                </div>
 
-
-
-
-                </div>
                 </div>
             </div>
-
-
+        </div>
 
 {% endblock %}
 

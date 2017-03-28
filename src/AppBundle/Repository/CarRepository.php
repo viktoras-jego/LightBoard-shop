@@ -131,13 +131,36 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
         }
 
         $paginator->getQuery()->getResult();
+        $pagefirst = 1;
 
+        if($pages >= 5 && $currentPage>=3){
+          $pagefirst = $currentPage - 2;
+            $pages = $currentPage + 2;
+        }
+        elseif ($pages>=5){
+            $pages = 5;
+        }
 
         return [
            'query' => $qb ->getQuery()->getResult(),
-           'pages' => $pages
+           'pages' => $pages,
+           'pagefirst' => $pagefirst
         ];
     }
+    public function DoneOrder(Request $request){
+        $qb = $this->createQueryBuilder('d');
+        $qb -> select('d');
+        $qb -> andWhere("d.delivery = 'Not yet sent'");
+        return [
+            'query' => $qb ->getQuery()->getResult(),
+        ];
+
+    }
+    public function NotDoneOrder(Request $request){
+        $qb = $this->createQueryBuilder('c');
+        $qb -> select('c');
+    }
+
 
    /* public function MoreThan(Request $request){
 

@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
+<script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
+<link href="https://fonts.googleapis.com/css?family=Catamaran:800|Lato:700|Montserrat:700|Source+Sans+Pro:600|Raleway:500|PT+Sans" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<div>
+    <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a style="text-decoration: none" href="{{ path("car_index") }}">
+                    <div class="nav-logo">
+                        <img id="light" class="navbar-logo" src="{{ asset('images/lb5.jpg') }}">
+                        <img id="board" class="navbar-logo2" src="{{ asset('images/lb4.jpg') }}">
+                    </div>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-md-6"></div>
+            <div style="padding-left: 4em" class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
+                <ul style="height: 10px" class="nav navbar-nav">
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("order_skate") }}">Orders</a></li>
+                    {% endif %}
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div>
+        {#{% if 'ROLE_USER' in user_roles%} LOGGED IN AS
+            <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
+            <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+            </a>
+        {% endif %}#}
+
+
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8" style="background: white; margin-top: 20px;padding-top: 40px;padding-left: 60px;padding-right: 60px;padding-bottom: 40px;height: 450px">
+                <img class="image_object" src="{{ product.photos[0].url }}" style="height: 360px; width: 248px;position: absolute">
+                <div class="vertical-line" style="height: 360px; width: 1px;position: absolute;margin-left: 280px"></div>
+                <div style="text-align: center;padding-left: 25em">
+                    <span style="font-family: 'Montserrat', sans-serif;text-align: right;font-size: 30px">{{ product.title }}</span>
+                    <br>
+                    <span style="font-family: 'Raleway', sans-serif;text-align: right;font-size: 20px">{{ product.category }}</span>
+                    <br><br>
+                    <span style="font-family: 'Raleway', sans-serif;text-align: right;font-size: 18px">{{ product.description }}</span>
+                    <div style="margin-top: 2em">
+                        <span style="font-family: 'Lato', sans-serif;text-align: right;font-size: 25px;text-decoration: underline">{{ product.price }}€</span>
+                        <br>
+                        <div style="margin-top: 10em">
+                            <button id="btn-buy" class="button_buy">BUY</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-4"></div>
+                <div id="buy-box" class="col-md-4" style="display: none;margin-bottom: 100px;background: white; margin-top: 10px;padding-top: 40px;padding-left: -50px;padding-right: 60px;padding-bottom: 50px;height: 560px">
+                    <div  style="display: inline">
+                        <div style="text-align: center">
+                            <span style="font-family: 'Lato', sans-serif;font-size: 30px;color: black">Fill out your order</span>
+
+                        </div>
+                        <br><br>
+                        <div style="font-family: 'PT Sans', sans-serif; font-size: 18px">
+                            {{  form_start(forma)   }}
+                            {{  form_row(forma.firstName)  }}
+                            {{  form_row(forma.lastName)  }}
+                            {{  form_row(forma.address)  }}
+                            {{  form_row(forma.city)  }}
+                            {{  form_row(forma.country)  }}
+                            {{  form_row(forma.postcode)  }}
+                            {{  form_row(forma.email)  }}
+                            {{  form_row(forma.quantity,{ 'attr': {'onkeyup': 'calculate();'}, 'id':'f1' } ) }}
+                        </div>
+                        <div style="text-align: center">
+                            <br>
+                            <span style="font-family: 'Catamaran', sans-serif;font-size: 22px;color: #2e2e2e" id="cost">Total cost: <span style="font-family: 'Lato', sans-serif;color: #000000;font-size: 25px" id="res"></span></span>
+                            <br>
+                            <br>
+                            {{  form_widget(forma.save,{ 'attr': {'class': 'button_buy'} } )  }}
+                            {{  form_end(forma)  }}
+                        </div>
+                    </div>
+
+
+
+
+                    <script>
+                        var f1 = parseInt(document.getElementById('f1').value);
+                        var f2 = '{{ product.price }}';
+                        var res1 = f1 * f2;
+                        var res = res1.toFixed(2);
+                        var euro = '€';
+                        $('#cost span').text(res+euro);
+
+                        $('#f1').change(function () {
+                            var f1 = parseInt(document.getElementById('f1').value);
+                            var f2 = '{{ product.price }}';
+                            var res1 = f1 * f2;
+                            var res = res1.toFixed(2);
+                            var euro = '€';
+                            $('#cost span').text(res+euro);
+                        })
+                    </script>
+
+                </div>
+
+</div>
+
+    <script src="{{ asset('js/navbaranimation.js') }}"></script>
+{% endblock %}
+
+
+
+    {% block javascripts %}
+        <script src="{{ asset('js/previewimg.js') }}"></script>
+    {% endblock %}

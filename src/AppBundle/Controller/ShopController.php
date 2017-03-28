@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Cash;
+use AppBundle\Entity\Customer;
 use AppBundle\Entity\Photos;
 use AppBundle\Entity\Produktas;
 use AppBundle\Entity\Shop;
@@ -25,6 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -41,15 +43,17 @@ use Symfony\Component\Security\Core\Security;
 class ShopController extends Controller
 {
     /**
-     * @Route("/shop",name="shop_page")
+     * @Route("/shop",name="shop_page",defaults={"success" = null})
      * @param Request $request
      * @return Response
      */
-    public function shop(Request $request){
+    public function shop(Request $request,$success){
+        $ats2 = null;
         {
-            $product = new Shop();
-            $form = $this->createForm(ShopType::class, $product);
-            $form->handleRequest($request);
+
+            if ($ats = $request->query->all()){
+            $ats2 = 'success';
+        }
 
             $repo = $this->getDoctrine()->getRepository('AppBundle:Skateboard')
                 ->ByPrice($request);
@@ -91,14 +95,15 @@ class ShopController extends Controller
 
 
             return $this->render('@FOSUser/Security/shop.html.twig', array(
-                'form' => $form->createView(),
                 'product' => null,
                 'last_username' => $lastUsername,
                 'error' => $error,
+                'success' => $ats2,
                 'pages' => $pages,
                 'csrf_token' => $csrfToken,
                 'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
                 'skateboard'=>$repo['query'],
+                'pagefirst'=>$repo['pagefirst'],
                 'orderValue' => $request->query->has('order') ? $request->query->get('order') : null,
                 'moreThan' => $request->query->has('order2') ? $request->query->get('order2') : null,
                 'lessThan' => $request->query->has('order3') ? $request->query->get('order3') : null,
@@ -118,6 +123,15 @@ class ShopController extends Controller
     public function addAction(Request $request)
     {
         $product = new Skateboard();
+
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
 
 
 
@@ -257,7 +271,7 @@ class ShopController extends Controller
         $csrfToken = $this->has('security.csrf.token_manager')
             ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
             : null;
-        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+
 
 
 
@@ -277,6 +291,171 @@ class ShopController extends Controller
         ]);
 
     }
+
+    /**
+     * @Route ("/skate/{skateboard}",name="buy_skate")
+     * @param Request $request
+     * @param Car $car
+     * @return Response
+     */
+
+    public function buyAction(Request $request, Skateboard $skateboard){
+
+
+        $product = new Customer();
+
+        // Create our form
+
+
+        $form = $this -> createFormBuilder($product)
+            ->add('firstName',TextType::class,array(
+                'label' => 'First name:'
+            ))
+            ->add('lastName',TextType::class,array(
+                'label' => 'Last name:'
+            ))
+            ->add('address',TextType::class,array(
+                'label' => 'Address:'
+            ))
+            ->add('city',TextType::class,array(
+                'label' => 'City:'
+            ))
+            ->add('country',TextType::class,array(
+                'label' => 'Country:'
+            ))
+            ->add('postcode',TextType::class,array(
+                'label' => 'Postal code:'
+            ))
+            ->add('email',EmailType::class,array(
+                'label' => 'Email:'
+            ))
+            ->add('quantity',ChoiceType::class,array(
+                'label' => 'Quantity:',
+                'choices'  => array(
+            '1' => '1', '2' => '2','3' => '3','4' => '4','5' => '5','6' => '6','7' => '7','8' => '8','9' => '9',
+                ),
+            ))
+
+            ->add('title',HiddenType::class)
+
+            ->add('category',HiddenType::class)
+            ->add('price',HiddenType::class)
+            ->add('description',HiddenType::class)
+            ->add('photos',HiddenType::class)
+            ->add('save',SubmitType::class,array(
+                'label' => 'PROCEED',
+            ))
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+
+
+
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $em = $this ->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+            return $this->redirectToRoute('shop_page', [
+                'success' => 'success'
+            ]);
+        }
+        $form->get('title')->setData($skateboard->getTitle());
+        $form->get('price')->setData($skateboard->getPrice());
+        $form->get('category')->setData($skateboard->getCategory());
+        $form->get('description')->setData($skateboard->getDescription());
+        $form->get('photos')->setData($skateboard->getPhotos()->get(0)->getUrl());
+
+
+
+
+        return $this->render('car/buy.html.twig',[
+            'product' => $skateboard,
+            'forma'=> $form ->createView(),
+            'edit' =>true,
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+        ]);
+
+    }
+    /**
+     * @Route ("/order",name="order_skate")
+     * @param Request $request
+     * @param Car $car
+     * @return Response
+     */
+
+    public function orderAction(Request $request){
+
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Customer')
+            ->DoneOrder($request);
+        $doneresult= $repo['query'];
+       // PVZ kaip isimti $pages= $repo['pages'];
+
+
+
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+
+
+
+
+
+        return $this->render('car/order.html.twig',[
+            'skateboard'=>$doneresult,
+            'edit' =>true,
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+        ]);
+
+    }
+
     /**
      * @Route ("/crop", name="crop_image")
      * @param Request $request
