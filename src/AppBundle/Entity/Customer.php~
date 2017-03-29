@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -135,6 +136,12 @@ class Customer{
      * @ORM\Column(name="PhotoLink", type="string",length=255,nullable=true)
      */
     private $photos;
+
+    /**
+     * @Assert\Type(type="AppBundle\Entity\OrdersAllInOne")
+     * @Assert\Valid()
+     */
+    protected $OrdersAllInOne;
 
     public function  __construct(){
         $this -> date = new \DateTime();

@@ -5,12 +5,32 @@
 
 (function() {
     var tl = new TimelineMax({})
+    var twimg = new TimelineMax({})
     var tl2 = new TimelineMax({})
     var logo = new TimelineMax({})
     var light = document.getElementById("light");
     var board = document.getElementById("board");
     var buy = document.getElementById("btn-buy");
     var box = document.getElementById("buy-box");
+    var image = document.getElementById("order-image");
+    var black1 = document.getElementById("black-box1");
+    var black2 = document.getElementById("black-box2");
+
+    $(".order-image").hover(over, out);
+
+    function over(){
+        TweenMax.to(this, 0.2,{
+            ease: Power1. easeOut,
+            borderColor:"#000000"
+        })
+    }
+
+    function out(){
+        TweenMax.to(this, 0.2, {ease: Power1. easeOut,
+            borderColor:"#FFFFFF"
+        })
+    }
+
 
 
     logo.to(board, 0, {

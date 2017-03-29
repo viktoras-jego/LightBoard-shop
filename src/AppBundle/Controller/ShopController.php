@@ -25,6 +25,7 @@ use Doctrine\DBAL\Types\DecimalType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -48,10 +49,10 @@ class ShopController extends Controller
      * @return Response
      */
     public function shop(Request $request,$success){
-        $ats2 = null;
-        {
 
-            if ($ats = $request->query->all()){
+            $ats2 = null;
+
+            if ($request->query->has('success')){
             $ats2 = 'success';
         }
 
@@ -110,7 +111,7 @@ class ShopController extends Controller
                 'category' => $request->query->has('order4') ? $request->query->get('order4') : null,
                 'page' => $request->query->has('page') ? $request->query->get('page') : 1,
             ));
-        }
+
     }
 
 
@@ -415,7 +416,9 @@ class ShopController extends Controller
         $repo = $this->getDoctrine()->getRepository('AppBundle:Customer')
             ->DoneOrder($request);
         $doneresult= $repo['query'];
-       // PVZ kaip isimti $pages= $repo['pages'];
+
+
+        // Create our form
 
 
 
@@ -442,10 +445,16 @@ class ShopController extends Controller
             : null;
 
 
+      // if ($form->isSubmitted() && $form->isValid()) {
 
 
+      //     $em = $this->getDoctrine()->getManager();
+      //     $em->flush();
+      //     return $this->redirectToRoute('order_skate');
+      // }
 
         return $this->render('car/order.html.twig',[
+           // 'forma'=> $form ->createView(),
             'skateboard'=>$doneresult,
             'edit' =>true,
             'last_username' => $lastUsername,

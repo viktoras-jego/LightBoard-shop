@@ -4,12 +4,14 @@
 
     <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+    <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600" rel="stylesheet">
 
-
-    <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
+    <div id="black-box1" class="black-block" style="margin-top: -20px"></div>
+    <nav class="navbar navbar-default navbar-fixed-top" style="border: 0px solid transparent;;background: white">
+        <div id="black-box2" class="black-block" style="margin-bottom: -10px"></div>
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -129,17 +131,22 @@
         <div class="col-sm-1"></div>
         <div class="row">
         <div style="background: white;padding-top: 10px" class="col-sm-5">
+            {% set myVal = 1 %} {# This value is for counting unique images for lightbox2#}
 
                 {% for skateboard in skateboard %}
+            {#{{  form_start(forma)   }}
+                    {{ forma.category.delivery }}
+                    {{  form_widget(forma.save,{ 'attr': {'class': 'button_buy'} } )  }}
+                    {{  form_end(forma)  }}#}
                         <div class="order-box1">
                             <div class="order-photo">
                                 <div>
-                                    <a href="#">
-                                        <img src="{{ skateboard.photos }}" style="position: fixed;;height: 140px; width: 103px">
+                                    <a data-lightbox="{{ skateboard.title }}{{ myVal }}" href="{{ skateboard.photos }}">
+                                        <img id="order-image" class="order-image" src="{{ skateboard.photos }}">
                                     </a>
                                 </div>
                             </div>
-                            <div>
+                            <div class="order-box2">
                                <div class="one-order-field">
                                 <span class="customer-info1">First name:</span>
                                     <span class="customer-info2"> {{ skateboard.firstName }}</span>
@@ -168,12 +175,44 @@
                                 <span class="customer-info1">Email:</span>
                                     <span class="customer-info2"> {{ skateboard.email }}</span>
                                 </div>
+
+                            </div>
+
+                            <div style="width: 320px;float:right;" class="order-box2">
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Title:</span>
+                                    <span class="customer-info2"> {{ skateboard.title }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Category:</span>
+                                    <span class="customer-info2"> {{ skateboard.category }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Date:</span>
+                                    <span class="customer-info2"> {{ skateboard.date|date("Y/d/m G:i:s", "Europe/Vilnius") }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Quantity:</span>
+                                    <span class="customer-info2"> {{ skateboard.quantity }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    {% set price = skateboard.quantity * skateboard.price %}
+                                    <span class="customer-info1">Total price:</span>
+                                    <span style="text-decoration: underline" class="customer-info2"> {{ price|number_format(2, '.', ',') }} €</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Status: </span>
+
+                                </div>
+
+
                             </div>
 
                         </div>
 
-
+                    {% set myVal = myVal + 1 %}
                 {% endfor %}
+
             </div>
 
 
@@ -203,7 +242,16 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
-    <script src="{{ asset('js/navbaranimation.js') }}"></script>
+    <script src="{{ asset('js/order.js') }}"></script>
+    <script src="{{ asset('assets/vendor/lightbox2/dist/js/lightbox.js') }}"></script>
+
+    <script>
+        lightbox.option({
+            'maxWidth': 654,
+            'maxHeight': 651
+
+        })
+    </script>
 {% endblock %}
 
 
