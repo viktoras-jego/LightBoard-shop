@@ -7,7 +7,7 @@
     <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600|Catamaran:300" rel="stylesheet">
 
     <div id="black-box1" class="black-block" style="margin-top: -20px"></div>
     <nav class="navbar navbar-default navbar-fixed-top" style="border: 0px solid transparent;;background: white">
@@ -43,101 +43,48 @@
 
 
 
-        {#  <div class="shop-box col-md-12" style="z-index: 1;background: white" align="center">
 
-             <div class="filter-bar" style="padding-bottom: 70px;padding-top: 45px" align="left">
-                 <div class="col-md-1"></div>
-
-                     <div style="display: inline" class="custom-select">
-                         <form style="display: inline" method="get" id="ByPriceForm">
-                         <span style="font-family: 'Source Sans Pro', sans-serif; font-size: 15px"> Price: &nbsp</span>
-
-                         <select class="select-filter" name="order" id="ByPriceFilter" title="Price from" value="{{ orderValue }}">
-                             <option>From</option>
-                             <option value="Cheapest">Cheapest</option>
-                             <option value="Expensive">Expensive</option>
-                         </select>
-
-                         <select class="select-filter" name="order2" id="MoreThan" title="More than" value="{{ moreThan }}">
-                             <option>More than</option>
-                             <option value="more-10">10 €</option>
-                             <option value="more-20">20 €</option>
-                             <option value="more-30">30 €</option>
-                             <option value="more-50">50 €</option>
-                             <option value="more-100">100 €</option>
-                         </select>
-
-                         <select class="select-filter" name="order3" id="LessThan" title="Less than" value="{{ lessThan }}">
-                             <option>Less than</option>
-                             <option value="less-10">10 €</option>
-                             <option value="less-20">20 €</option>
-                             <option value="less-30">30 €</option>
-                             <option value="less-50">50 €</option>
-                             <option value="less-100">100 €</option>
-                         </select>
-                         <span style="font-family: 'Source Sans Pro', sans-serif; font-size: 15px"> &nbsp &nbsp Category: &nbsp</span>
-                         <select class="select-filter" name="order4" id="Category" title="Category" value="{{ category }}">
-                             <option>Select category</option>
-                             <option value="Pennyboard">Pennyboard</option>
-                             <option value="Longboard">Longboard</option>
-                             <option value="Skateboard">Skateboard</option>
-                         </select>
-                         <div class="page-numbers" style="text-align: right;display: inline; padding-left: 4em">
-
-
-
-                         {% for p in pagefirst..pages %}
-                         <button id="page-{{ p }}" type="submit" name="page" value="{{ p }}" {%  if p == page %} class="btn-page-active" {%  endif %} {% if p != page %} class="btn-page" {% endif %}>{{ p }}</button>
-                             {% endfor %}
-                         </div>
-                         </form>
-                         {% if 'ROLE_USER' in user_roles%}
-                                 <a style="padding-left: 32em" href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
-                         {% endif %}
-
-                     </div>
-             </div>
-
-
-             {#{% if 'ROLE_USER' in user_roles%}
-
-             <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
-             <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
-                 {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-             </a>
-
-         {% endif %}
-         {% if  user_roles is null %}
-             <div  style=" position: absolute">
-                 <br>
-
-                 <div id="sidebar" style="position: fixed; width: 230px;height: 1000px; background: rgba(255, 255, 255, 0.60)" class="col-sm-3 col-md-2 sidebar">
-                 </div>
-                 <br><br><br><br><br><br><br><br>
-                 <div style="position: relative" id="log">
-
-                     {{ include('FOSUserBundle:Security:login_content.html.twig') }}
-                 </div>
-             </div>
-
-             <nav style="width: 300px" class="navbar navbar-fixed-top">
-                 <br>
-                 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                 <button  id="login1" type="button" style=" text-align: right" class="button_test">Login </button>
-             </nav>
-         {% endif %}
-         #}
 
         <div class="col-sm-1"></div>
         <div class="row">
         <div style="background: white;padding-top: 10px" class="col-sm-5">
             {% set myVal = 1 %} {# This value is for counting unique images for lightbox2#}
+            <form id="Order-form">
 
+                <div class="order-filters">
+                    <div style="display: inline" class="custom-select3">
+                        <select class="select-filter" name="orderTime" id="ByTimeFilter" title="Price from" value="{{ orderTime }}">
+                            <option value="Oldest">Oldest</option>
+                            <option value="Newest">Newest</option>
+                        </select>
+                        <div style="display: inline; margin-left: 14px">
+                            {% for p in pagefirst..pages %}
+                                <button id="page-{{ p }}" type="submit" name="page" value="{{ p }}" {%  if p == page %} class="btn-page-active" {%  endif %} {% if p != page %} class="btn-page" {% endif %}>{{ p }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button style="float: right" class="button_test2" id="form-submit">Sumbit status</button>
+
+                    <div style="display: inline; float: right;margin-right: 33px">
+                        <label style="width: 0px" for="TextSearch"></label><input name="TextSearch" id="TextSearch">
+                        <button  class="button_test3" id="form-submit2">Search</button>
+                    </div>
+                </div>
+
+
+
+
+                <label class="customer-status">
+                    <select name="status" style="display: none">
+                        <option value="status"></option>
+                    </select>
+                </label>
                 {% for skateboard in skateboard %}
             {#{{  form_start(forma)   }}
                     {{ forma.category.delivery }}
                     {{  form_widget(forma.save,{ 'attr': {'class': 'button_buy'} } )  }}
                     {{  form_end(forma)  }}#}
+
                         <div class="order-box1">
                             <div class="order-photo">
                                 <div>
@@ -189,7 +136,7 @@
                                 </div>
                                 <div class="one-order-field2">
                                     <span class="customer-info1">Date:</span>
-                                    <span class="customer-info2"> {{ skateboard.date|date("Y/d/m G:i:s", "Europe/Vilnius") }}</span>
+                                    <span class="customer-info2"> {{ skateboard.date|date("Y-m-d G:i:s", "Europe/Vilnius") }}</span>
                                 </div>
                                 <div class="one-order-field2">
                                     <span class="customer-info1">Quantity:</span>
@@ -198,10 +145,19 @@
                                 <div class="one-order-field2">
                                     {% set price = skateboard.quantity * skateboard.price %}
                                     <span class="customer-info1">Total price:</span>
-                                    <span style="text-decoration: underline" class="customer-info2"> {{ price|number_format(2, '.', ',') }} €</span>
+                                    <span class="customer-info2"> {{ price|number_format(2, '.', ',') }} €</span>
                                 </div>
                                 <div class="one-order-field2">
+                                    <div style="display: inline" class="custom-select2">
                                     <span class="customer-info1">Status: </span>
+                                        <label class="customer-status">
+                                            <select class="select-filter" name="{{ skateboard.id }}">
+                                                <option value="Not yet sent">Not yet sent</option>
+                                                <option value="Sent">Send</option>
+                                                <option value="Declined">Decline</option>
+                                            </select>
+                                        </label>
+                                    </div>
 
                                 </div>
 
@@ -212,7 +168,7 @@
 
                     {% set myVal = myVal + 1 %}
                 {% endfor %}
-
+            </form>
             </div>
 
 
@@ -246,6 +202,31 @@
     <script src="{{ asset('assets/vendor/lightbox2/dist/js/lightbox.js') }}"></script>
 
     <script>
+        {% if orderTime is not null %}
+        $('#ByTimeFilter').val('{{ orderTime }}');
+        {% endif %}
+
+        {% if TextSearch is not null %}
+        $('#TextSearch').val('{{ TextSearch }}');
+        {% endif %}
+
+        $('#ByTimeFilter').change(function () {
+            document.getElementById("Order-form").submit();
+        });
+
+        $('#TextSearch').change(function () {
+            console.log(document.getElementById("TextSearch").value);
+            document.getElementById("Order-form").submit();
+        });
+
+        $('#form-submit').click(function(){
+            document.getElementById("Order-form").submit();
+        });
+
+        $('#form-submit2').click(function(){
+            document.getElementById("Order-form").submit();
+        });
+
         lightbox.option({
             'maxWidth': 654,
             'maxHeight': 651

@@ -3221,6 +3221,11 @@ fieldset[disabled] a.btn {
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
  }
+.customer-status{
+  text-align: left;
+  color: black;
+  font-size: 14px;
+}
 .button_buy {
 
   border-radius:1px;
@@ -3242,15 +3247,50 @@ fieldset[disabled] a.btn {
 li:hover{
   background: #ebebeb;
 }
-.button_test {
+.button_test3 {
+  margin-left: 5px;
+  border-radius:4px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  background: transparent;
+  color: #000000;
+  font-size: 15px;
+  padding:5px;
+  border: solid rgba(0, 0, 0, 0.31) 2px;
+  text-decoration: none;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+.button_test3:hover {
+  background: #e0e0e0;
+  text-decoration: none;
+}
+.button_test2 {
+  border-radius:1px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  background: transparent;
+  color: #000000;
+  font-size: 15px;
+  padding:5px;
+  border: solid rgba(0, 0, 0, 0.7) 2px;
+  text-decoration: none;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+.button_test2:hover {
+  background: #e0e0e0;
+  text-decoration: none;
+}
 
+.button_test {
     border-radius:1px;
     font-family: 'Lato', sans-serif;
     font-weight: 800;
     background: transparent;
     color: #000000;
     font-size: 15px;
-    padding: 6px;
+    padding: 5px;
     border: solid rgb(0, 0, 0) 2px;
     text-decoration: none;
     padding-left: 10px;
@@ -4428,6 +4468,38 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .custom-select{
   width:200px;
   overflow:hidden;
+}
+.custom-select3 select{
+  outline:0 none !important;
+  border-style: solid;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 120px;
+  color: #000;
+  color: rgba(0,0,0,0);
+  text-shadow: 0 0 0 #000;
+  margin-top: 3px;
+  padding: 4px;
+  font-weight: 600;
+  font-size: 15px;
+  border-color: rgba(0, 0, 0, 0.31);
+  background: transparent url("http://i.imgur.com/Io5I1PL.png") no-repeat 90px center;
+}
+.custom-select2 select{
+  outline:0 none !important;
+  border-style: solid;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 150px;
+  color: #000;
+  color: rgba(0,0,0,0);
+  text-shadow: 0 0 0 #000;
+  margin-top: 3px;
+  padding: 4px;
+  font-weight: 600;
+  font-size: 15px;
+  border-color: rgba(0, 0, 0, 0.31);
+  background: transparent url("http://i.imgur.com/Io5I1PL.png") no-repeat 118px center;
 }
 .custom-select select{
   outline:0 none !important;

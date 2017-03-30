@@ -100,11 +100,11 @@ class ShopController extends Controller
                 'last_username' => $lastUsername,
                 'error' => $error,
                 'success' => $ats2,
-                'pages' => $pages,
                 'csrf_token' => $csrfToken,
                 'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
                 'skateboard'=>$repo['query'],
                 'pagefirst'=>$repo['pagefirst'],
+                'pages' => $pages,
                 'orderValue' => $request->query->has('order') ? $request->query->get('order') : null,
                 'moreThan' => $request->query->has('order2') ? $request->query->get('order2') : null,
                 'lessThan' => $request->query->has('order3') ? $request->query->get('order3') : null,
@@ -413,14 +413,29 @@ class ShopController extends Controller
 
     public function orderAction(Request $request){
 
-        $repo = $this->getDoctrine()->getRepository('AppBundle:Customer')
-            ->DoneOrder($request);
-        $doneresult= $repo['query'];
 
 
         // Create our form
 
-
+        if ($request->query->has('status')){
+            $ids = $request->query->all();
+            //Here unset all values to get good submit result
+            unset($ids["status"]);
+            unset($ids["orderTime"]);
+            unset($ids["TextSearch"]);
+            unset($ids["page"]);
+            dump($ids);
+            foreach ($ids as $key => $value){
+                $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
+                $repox -> setDelivery($value);
+                $em = $this ->getDoctrine()->getManager();
+                $em->flush($repox);
+            }
+        }
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Customer')
+            ->DoneOrder($request);
+        $doneresult= $repo['query'];
+        dump($doneresult);
 
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
@@ -454,7 +469,11 @@ class ShopController extends Controller
       // }
 
         return $this->render('car/order.html.twig',[
-           // 'forma'=> $form ->createView(),
+            'pagefirst'=>$repo['pagefirst'],
+            'pages' => $repo['pages'],
+            'page' => $request->query->has('page') ? $request->query->get('page') : 1,
+            'TextSearch' => $request->query->has('TextSearch') ? $request->query->get('TextSearch') : null,
+            'orderTime' => $request->query->has('orderTime') ? $request->query->get('orderTime') : null,
             'skateboard'=>$doneresult,
             'edit' =>true,
             'last_username' => $lastUsername,
