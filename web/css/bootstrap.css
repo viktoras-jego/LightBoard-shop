@@ -3221,6 +3221,28 @@ fieldset[disabled] a.btn {
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
  }
+.customer-info3{
+  text-align: left;
+  color: black;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  background: rgba(0, 167, 0, 0.73);
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 2px;
+  padding-bottom: 2px;
+}
+.customer-info4{
+  text-align: left;
+  color: black;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  background: rgba(235, 0, 0, 0.7);
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 2px;
+  padding-bottom: 2px;
+}
 .customer-status{
   text-align: left;
   color: black;
@@ -3300,6 +3322,18 @@ li:hover{
 .button_test:hover {
     background: #e0e0e0;
     text-decoration: none;
+}
+.collumn-titles{
+  text-align: center;
+  margin-top: -7px;
+  font-family: 'Dosis', sans-serif;
+  font-size: 30px;
+}
+.horizontal-line{
+  height: 0px;
+  border: solid rgb(0, 0, 0) 1px;
+  margin-top: -3px;
+
 }
 .vertical-line{
   width: 1px; /* Line width */

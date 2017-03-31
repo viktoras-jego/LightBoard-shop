@@ -20,11 +20,11 @@ use AppBundle\Form\CarType;
 use AppBundle\Form\ShopType;
 use AppBundle\Form\SkateboardType;
 use AppBundle\Service\MathService;
+use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Types\DecimalType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -415,27 +415,39 @@ class ShopController extends Controller
 
 
 
-        // Create our form
+
+
+
 
         if ($request->query->has('status')){
-            $ids = $request->query->all();
-            //Here unset all values to get good submit result
-            unset($ids["status"]);
-            unset($ids["orderTime"]);
-            unset($ids["TextSearch"]);
-            unset($ids["page"]);
-            dump($ids);
-            foreach ($ids as $key => $value){
-                $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
-                $repox -> setDelivery($value);
-                $em = $this ->getDoctrine()->getManager();
-                $em->flush($repox);
-            }
+                $ids = $request->query->all();
+                //Here unset all values to get good submit result
+                unset($ids["status"]);
+                unset($ids["orderTime"]);
+                unset($ids["orderTime2"]);
+                unset($ids["TextSearch"]);
+                unset($ids["page"]);
+                unset($ids["page2"]);
+                unset($ids["TextSearch2"]);
+                unset($ids["timeDone"]);
+
+
+
+                foreach ($ids as $key => $value){
+                    $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
+                    $repox -> setDelivery($value);
+                    $em = $this ->getDoctrine()->getManager();
+                    $em->flush($repox);
+                }
         }
+
         $repo = $this->getDoctrine()->getRepository('AppBundle:Customer')
             ->DoneOrder($request);
         $doneresult= $repo['query'];
-        dump($doneresult);
+
+        $repo2 = $this->getDoctrine()->getRepository('AppBundle:Customer')
+            ->NotDoneOrder($request);
+        $doneresult2= $repo2['query2'];
 
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
@@ -471,10 +483,18 @@ class ShopController extends Controller
         return $this->render('car/order.html.twig',[
             'pagefirst'=>$repo['pagefirst'],
             'pages' => $repo['pages'],
+            'currentpage2' => $repo2['currentpage2'],
+            'currentpage' => $repo['currentpage'],
+            'pagefirst2'=>$repo2['pagefirst2'],
+            'pages2' => $repo2['pages2'],
             'page' => $request->query->has('page') ? $request->query->get('page') : 1,
+            'page2' => $request->query->has('page2') ? $request->query->get('page2') : 1,
             'TextSearch' => $request->query->has('TextSearch') ? $request->query->get('TextSearch') : null,
+            'TextSearch2' => $request->query->has('TextSearch2') ? $request->query->get('TextSearch2') : null,
             'orderTime' => $request->query->has('orderTime') ? $request->query->get('orderTime') : null,
+            'orderTime2' => $request->query->has('orderTime2') ? $request->query->get('orderTime2') : null,
             'skateboard'=>$doneresult,
+            'skateboard2'=>$doneresult2,
             'edit' =>true,
             'last_username' => $lastUsername,
             'error' => $error,
@@ -496,7 +516,7 @@ class ShopController extends Controller
 
         $image = $content['image'];
         $randomStr2 = $content['randomStr'];
-        dump($randomStr2);
+
 
 if($image != null){
 

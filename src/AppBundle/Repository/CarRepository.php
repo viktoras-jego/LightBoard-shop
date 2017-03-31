@@ -192,13 +192,6 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
                     OR d.date LIKE '%$text%'
                      OR d.postcode LIKE '%$text%'
                        ");
-              //  $qb -> andWhere(" OR d.address LIKE '%$text%'");
-              //  $qb -> andWhere(" OR d.city LIKE '%$text%'");
-              //  $qb -> andWhere(" OR d.country LIKE '%$text%'");
-              //  $qb -> andWhere(" OR d.postcode LIKE '%$text%'");
-              //  $qb -> andWhere(" OR d.email LIKE '%$text%'");
-              //  $qb -> andWhere(" OR d.date LIKE '%$text%'");
-              //  $qb -> andWhere(" OR d.postcode LIKE '%$text%'");
             }
 
         }
@@ -242,7 +235,8 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
         return [
             'query' => $qb ->getQuery()->getResult(),
             'pages' => $pages,
-            'pagefirst' => $pagefirst
+            'pagefirst' => $pagefirst,
+            'currentpage' => $currentPage
         ];
 
     }
@@ -250,8 +244,89 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
 
 
     public function NotDoneOrder(Request $request){
-        $qb = $this->createQueryBuilder('c');
-        $qb -> select('c');
+        $qb = $this->createQueryBuilder('d');
+        $qb -> select('d');
+        $qb -> andWhere("d.delivery = 'Sent' OR d.delivery = 'Declined'");
+        $qb -> orderBy('d.date','DESC');
+
+        if($request->query->has('orderTime2')){
+            $ordertime = $request->query->get('orderTime2');
+
+            if($ordertime == 'Newest'){
+
+                $qb -> orderBy('d.date','DESC');
+
+            }
+            elseif ($ordertime== 'Oldest'){
+
+                $qb -> orderBy('d.date','ASC');
+
+            }
+        }
+
+        if($request->query->has('TextSearch2')){
+            $text = $request->query->get('TextSearch2');
+            if (ctype_space($text)) {
+
+            }
+            else{
+                $qb -> andWhere("d.firstName LIKE '%$text%'
+              OR d.lastName LIKE '%$text%'
+               OR d.address LIKE '%$text%'
+                OR d.city LIKE '%$text%'
+                 OR d.country LIKE '%$text%'
+                  OR d.postcode LIKE '%$text%'
+                   OR d.email LIKE '%$text%'
+                    OR d.date LIKE '%$text%'
+                     OR d.postcode LIKE '%$text%'
+                       ");
+            }
+
+        }
+        $currentPage = $request->query->get('page2');
+        if (!$currentPage || $currentPage < 0) {
+            $currentPage = 1;
+        }
+        $itemsPerPage = 8; //items in one page
+
+        $qb
+            ->setMaxResults($itemsPerPage)
+            ->setFirstResult(($currentPage-1)*$itemsPerPage);
+
+        $paginator = new Paginator($qb);
+        $pages = ceil(count($paginator) / $itemsPerPage);
+
+        if ($pages == 0){
+            $pages = 1;
+        }
+
+        $paginator->getQuery()->getResult();
+        $pagefirst = 1;
+
+
+        if($pages >= 5 && $currentPage>=3 && $pages-$currentPage == 0){
+            $pagefirst = $currentPage - 4;
+
+        }
+        elseif($pages >= 5 && $currentPage>=3 && $pages-$currentPage == 1){
+            $pagefirst = $currentPage - 3;
+
+        }
+        elseif($pages >= 5 && $currentPage>=3){
+            $pagefirst = $currentPage - 2;
+            $pages = $currentPage + 2;
+        }
+        elseif ($pages>=5){
+            $pages = 5;
+        }
+
+        return [
+            'currentpage2' => $currentPage,
+            'query2' => $qb ->getQuery()->getResult(),
+            'pages2' => $pages,
+            'pagefirst2' => $pagefirst
+        ];
+
     }
 
 

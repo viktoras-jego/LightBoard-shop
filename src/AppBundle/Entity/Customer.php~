@@ -88,6 +88,7 @@ class Customer{
      */
 
     private $date;
+
     /**
      * @var = int
      *
@@ -145,6 +146,7 @@ class Customer{
 
     public function  __construct(){
         $this -> date = new \DateTime();
+        $this -> processdate = new \DateTime();
         $this -> delivery ='Not yet sent';
     }
 
@@ -518,4 +520,13 @@ class Customer{
     {
         return $this->quantity;
     }
+
+    /**
+     * Set processdate
+     *
+     * @param \DateTime $processdate
+     *
+     * @return Customer
+     */
+   
 }

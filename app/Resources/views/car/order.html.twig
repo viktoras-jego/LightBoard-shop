@@ -7,7 +7,7 @@
     <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600|Catamaran:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600|Catamaran:300|Dosis:500" rel="stylesheet">
 
     <div id="black-box1" class="black-block" style="margin-top: -20px"></div>
     <nav class="navbar navbar-default navbar-fixed-top" style="border: 0px solid transparent;;background: white">
@@ -44,12 +44,20 @@
 
 
 
+            <div class="collumn-titles">
+                <span style="text-align: center;margin-left: -1%">Not yet processed</span>
+                <span style="text-align: center;margin-left: 35%">Already processed</span>
+            </div>
+
+
 
         <div class="col-sm-1"></div>
+        <form id="Order-form">
         <div class="row">
-        <div style="background: white;padding-top: 10px" class="col-sm-5">
+            <input style="display: none" name="page" id="currentpage">
+            <input style="display: none" name="page2" id="currentpage2">
+        <div style="margin-left: -50px;background: white;padding-top: 10px" class="col-sm-5">
             {% set myVal = 1 %} {# This value is for counting unique images for lightbox2#}
-            <form id="Order-form">
 
                 <div class="order-filters">
                     <div style="display: inline" class="custom-select3">
@@ -59,7 +67,7 @@
                         </select>
                         <div style="display: inline; margin-left: 14px">
                             {% for p in pagefirst..pages %}
-                                <button id="page-{{ p }}" type="submit" name="page" value="{{ p }}" {%  if p == page %} class="btn-page-active" {%  endif %} {% if p != page %} class="btn-page" {% endif %}>{{ p }}</button>
+                                <button  name="page" value="{{ p }}" {%  if p == page %} id="page-{{ p }}" class="btn-page-active" {%  endif %} {% if p != page %} id="page-{{ p }}" class="btn-page" {% endif %}>{{ p }}</button>
                             {% endfor %}
                         </div>
                     </div>
@@ -70,21 +78,13 @@
                         <button  class="button_test3" id="form-submit2">Search</button>
                     </div>
                 </div>
-
-
-
-
                 <label class="customer-status">
                     <select name="status" style="display: none">
                         <option value="status"></option>
                     </select>
                 </label>
+               <hr class="horizontal-line" >
                 {% for skateboard in skateboard %}
-            {#{{  form_start(forma)   }}
-                    {{ forma.category.delivery }}
-                    {{  form_widget(forma.save,{ 'attr': {'class': 'button_buy'} } )  }}
-                    {{  form_end(forma)  }}#}
-
                         <div class="order-box1">
                             <div class="order-photo">
                                 <div>
@@ -122,9 +122,7 @@
                                 <span class="customer-info1">Email:</span>
                                     <span class="customer-info2"> {{ skateboard.email }}</span>
                                 </div>
-
                             </div>
-
                             <div style="width: 320px;float:right;" class="order-box2">
                                 <div class="one-order-field2">
                                     <span class="customer-info1">Title:</span>
@@ -158,30 +156,123 @@
                                             </select>
                                         </label>
                                     </div>
-
                                 </div>
-
-
                             </div>
-
                         </div>
-
                     {% set myVal = myVal + 1 %}
                 {% endfor %}
-            </form>
+
             </div>
 
 
-        <div class="col-sm-1"></div>
 
-            <div style="background: white" class="col-sm-4">
-                {% for skateboard in skateboard %}
-                       <div> {{ skateboard.firstName }} </div>
+            {# SECOND COLUMN HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
+            {# SECOND COLUMN HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
 
-                {% endfor %}
+            <div style="background: white; margin-left: 75px;padding-top: 10px" class="col-sm-5">
+                 {% set myVal2 = 10 %} {# This value is for counting unique images for lightbox2#}
+
+                    <div class="order-filters">
+                        <div style="display: inline" class="custom-select3">
+                            <select class="select-filter" name="orderTime2" id="ByTimeFilter2" title="Price from2" value="{{ orderTime }}">
+                                <option value="Newest">Newest</option>
+                                <option value="Oldest">Oldest</option>
+                            </select>
+                            <div style="display: inline; margin-left: 14px">
+                                {% for p2 in pagefirst2..pages2 %}
+                                    <button id="page--{{ p2 }}"  name="page2" value="{{ p2 }}" {%  if p2 == page2 %} class="btn-page-active" {%  endif %} {% if p2 != page2 %} class="btn-page" {% endif %}>{{ p2 }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div style="display: inline; float: right;margin-right: 33px">
+                            <label style="width: 0px" for="TextSearch2"></label><input name="TextSearch2" id="TextSearch2">
+                            <button  class="button_test3" id="form-submit3">Search</button>
+                        </div>
+                    </div>
+                    <label class="customer-status">
+                        <select name="status" style="display: none">
+                            <option value="status"></option>
+                        </select>
+                    </label>
+                    <hr class="horizontal-line" >
+                    {% for skateboard2 in skateboard2 %}
+                        <div class="order-box1">
+                            <div class="order-photo">
+                                <div>
+                                    <a data-lightbox="{{ skateboard2.title }}{{ myVal2 }}" href="{{ skateboard2.photos }}">
+                                        <img id="order-image" class="order-image" src="{{ skateboard2.photos }}">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="order-box2">
+                                <div class="one-order-field">
+                                    <span class="customer-info1">First name:</span>
+                                    <span class="customer-info2"> {{ skateboard2.firstName }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                    <span class="customer-info1">Last name:</span>
+                                    <span class="customer-info2"> {{ skateboard2.lastName }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                    <span class="customer-info1">Address:</span>
+                                    <span class="customer-info2"> {{ skateboard2.address }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                    <span class="customer-info1">City:</span>
+                                    <span class="customer-info2"> {{ skateboard2.city }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                    <span class="customer-info1">Country:</span>
+                                    <span class="customer-info2"> {{ skateboard2.country }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                    <span class="customer-info1">Postal code:</span>
+                                    <span class="customer-info2"> {{ skateboard2.postcode }}</span>
+                                </div>
+                                <div class="one-order-field">
+                                    <span class="customer-info1">Email:</span>
+                                    <span class="customer-info2"> {{ skateboard2.email }}</span>
+                                </div>
+                            </div>
+                            <div style="width: 320px;float:right;" class="order-box2">
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Title:</span>
+                                    <span class="customer-info2"> {{ skateboard2.title }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Category:</span>
+                                    <span class="customer-info2"> {{ skateboard2.category }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Date:</span>
+                                    <span class="customer-info2"> {{ skateboard2.date|date("Y-m-d G:i:s", "Europe/Vilnius") }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Quantity:</span>
+                                    <span class="customer-info2"> {{ skateboard2.quantity }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    {% set price2 = skateboard2.quantity * skateboard2.price %}
+                                    <span class="customer-info1">Total price2:</span>
+                                    <span class="customer-info2"> {{ price2|number_format(2, '.', ',') }} €</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <div style="display: inline" class="custom-select2">
+                                        <span class="customer-info1">Status: </span>
+
+                                          <span {%  if skateboard2.delivery == 'Sent' %} class="customer-info3" {%  endif %} {% if skateboard2.delivery == 'Declined' %} class="customer-info4" {% endif %} class="customer-info2"> {{ skateboard2.delivery }}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% set myVal2 = myVal2 + 1 %}
+                    {% endfor %}
+
             </div>
         </div>
-
+        </form>
 
         {% if error %}
             <div class="flash-notice">
@@ -202,20 +293,36 @@
     <script src="{{ asset('assets/vendor/lightbox2/dist/js/lightbox.js') }}"></script>
 
     <script>
+        {% if currentpage is not null %}
+        $('#currentpage').val('{{ currentpage }}');
+        {% endif %}
+
+
+        {% if currentpage2 is not null %}
+        $('#currentpage2').val('{{ currentpage2 }}');
+        {% endif %}
+
         {% if orderTime is not null %}
         $('#ByTimeFilter').val('{{ orderTime }}');
+        {% endif %}
+
+        {% if orderTime2 is not null %}
+        $('#ByTimeFilter2').val('{{ orderTime2 }}');
         {% endif %}
 
         {% if TextSearch is not null %}
         $('#TextSearch').val('{{ TextSearch }}');
         {% endif %}
 
+        {% if TextSearch2 is not null %}
+        $('#TextSearch2').val('{{ TextSearch2 }}');
+        {% endif %}
+
         $('#ByTimeFilter').change(function () {
             document.getElementById("Order-form").submit();
         });
 
-        $('#TextSearch').change(function () {
-            console.log(document.getElementById("TextSearch").value);
+        $('#ByTimeFilter2').change(function () {
             document.getElementById("Order-form").submit();
         });
 
@@ -224,6 +331,9 @@
         });
 
         $('#form-submit2').click(function(){
+            document.getElementById("Order-form").submit();
+        });
+        $('#form-submit3').click(function(){
             document.getElementById("Order-form").submit();
         });
 
