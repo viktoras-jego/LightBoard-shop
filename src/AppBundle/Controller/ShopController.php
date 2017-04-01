@@ -41,8 +41,92 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ *
+ * Class ShopController
+ *
+ * @Route("/home")
+ */
 class ShopController extends Controller
 {
+    /**
+     * @Route("/",name="car_index")
+     */
+    public function indexAction(Request $request){
+
+        /*  $math = $this->get('app.math');
+          $res = $math->addNumbers(2,3);
+          dump($res);
+          return new Response();*/
+
+
+        $form = $this -> createFormBuilder()
+
+            ->add('SHOP', SubmitType::class, [
+                'label' => 'SHOP',
+                'attr' => [
+                    'class' => 'button_test'
+                ]
+            ])
+            ->getForm()
+        ;
+
+
+
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+
+
+
+        // dump($request-> query->get('comment'));
+
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Produktas');
+        $repo2 = $this->getDoctrine()->getRepository('AppBundle:Car');
+        $cars = $repo2->findAll();
+        $produktas = $repo->find(1);
+        //$custom = $repo -> find(1);
+        // $custom1 = $custom->getKaina();
+        // dump($custom1);
+        // return new Response();
+
+
+
+
+        return $this->render('@FOSUser/Security/index.html.twig',[
+            'cars' => $cars,
+            'kaina' => $produktas->getKaina(),
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+            'form'=> $form ->createView(),
+        ]);
+    }
+
     /**
      * @Route("/shop",name="shop_page",defaults={"success" = null})
      * @param Request $request
@@ -413,12 +497,14 @@ class ShopController extends Controller
 
     public function orderAction(Request $request){
 
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
 
-
-
-
-
-
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
         if ($request->query->has('status')){
                 $ids = $request->query->all();
                 //Here unset all values to get good submit result

@@ -2,6 +2,7 @@
 
 {% block body %}
 <link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
+<link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
 <script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
 <link href="https://fonts.googleapis.com/css?family=Catamaran:800|Lato:700|Montserrat:400|Source+Sans+Pro:600|Raleway:500|PT+Sans" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -33,11 +34,11 @@
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
                     {% if 'ROLE_USER' in user_roles%}
-                        <li class="no-hover" style="width: 100px;position: absolute; margin-left: 110%">
+                        <li class="no-hover" style="position: absolute; margin-left: 110%">
                             <a style="color: black;">{{app.user.username}} </a>
                         </li>
                         <div class="vertical-line" style="height: 55px; width: 1px;position: absolute;margin-left: 131.5%"></div>
-                        <li class="no-hover2" style="width: 100px;position: absolute; margin-left: 130%">
+                        <li class="no-hover2" style="position: absolute; margin-left: 130%">
                             <a style="color: black;" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
                         </li>
                     {% endif %}
@@ -58,7 +59,9 @@
 
             <div class="col-md-2"></div>
             <div class="col-md-8" style="background: white; margin-top: 20px;padding-top: 40px;padding-left: 60px;padding-right: 60px;padding-bottom: 40px;height: 450px">
-                <img class="image_object" src="{{ product.photos[0].url }}" style="height: 360px; width: 248px;position: absolute">
+                <a data-lightbox="{{ product.photos[0].url }}" href="{{ product.photos[0].url }}">
+                    <img  class="image_object order-image" src="{{ product.photos[0].url }}" style="height: 360px; width: 248px;position: absolute">
+                </a>
                 <div class="vertical-line" style="height: 360px; width: 1px;position: absolute;margin-left: 280px"></div>
                 <div style="text-align: center;padding-left: 25em">
                     <span style="font-weight: 700;font-family: 'Montserrat', sans-serif;text-align: right;font-size: 30px">{{ product.title }}</span>
@@ -129,12 +132,20 @@
                 </div>
 
 </div>
+        <script src="{{ asset('assets/vendor/lightbox2/dist/js/lightbox.js') }}"></script>
+        <script src="{{ asset('js/buypage.js') }}"></script>
+      <script>
+          lightbox.option({
+              'maxWidth': 654,
+              'maxHeight': 651
 
-    <script src="{{ asset('js/navbaranimation.js') }}"></script>
+          })
+      </script>
 {% endblock %}
 
 
 
     {% block javascripts %}
+
         <script src="{{ asset('js/previewimg.js') }}"></script>
     {% endblock %}

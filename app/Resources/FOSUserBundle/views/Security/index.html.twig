@@ -1,145 +1,62 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600|Fira+Sans:300i,500i|Indie+Flower|Roboto+Slab:700|Roboto:300,700|Lato:700|Raleway:600|Source+Sans+Pro:600|Montserrat:400" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
 
 
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
-
-
-
-
-
-        <div style="position: relative; height: 140px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
-
-            <div  style="position: relative; width: 1800px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
-
-        <br>
-        <br>
-
-                {% if 'ROLE_USER' in user_roles%}
-
-                    <div style=" font-size: 30px;font-family: 'Quicksand', sans-serif;"> Logged as : {{app.user.username}} </div>
-                    <a style="font-size: 30px; font-family: 'Quicksand', sans-serif;" href="{{ path('fos_user_security_logout') }}">
-                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                    </a>
-
-                {% endif %}
-
-
-
-                {% if  user_roles is null %}
-                <div  style=" position: absolute">
-                    <br>
-
-                    <div id="sidebar" style="position: fixed; width: 230px;height: 1000px; background: rgba(255, 255, 255, 0.60)" class="col-sm-3 col-md-2 sidebar">
+    <nav class="navbar navbar-default navbar-fixed-top" style="border: 0px solid transparent;;background: white">
+        <div id="black-box2" class="black-block" style="margin-bottom: -10px"></div>
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a style="text-decoration: none" href="{{ path("car_index") }}">
+                    <div class="nav-logo">
+                        <img id="light" class="navbar-logo" src="{{ asset('images/lb5.jpg') }}">
+                        <img id="board" class="navbar-logo2" src="{{ asset('images/lb4.jpg') }}">
                     </div>
-                    <br><br><br><br><br><br><br><br>
-                        <div style="position: relative" id="log">
-
-                        {{ include('FOSUserBundle:Security:login_content.html.twig') }}
-                        </div>
-                </div>
-
-                <nav style="width: 300px" class="navbar navbar-fixed-top">
-                    <br>
-                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                    <button  id="login1" type="button" style=" text-align: right" class="button_test">Login </button>
-                </nav>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-md-6"></div>
+            <div style="padding-left: 4em" class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
+                <ul style="height: 10px" class="nav navbar-nav">
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("order_skate") }}">Orders</a></li>
                     {% endif %}
-
-
-
-                    <div  class="container-fluid">
-                    <div class="row"  style="float: right; position: absolute; top: 0; right: 0; width: 650px; text-align:left;">
-                    <br>
-                        <a href="{{ path("shop_page") }}"><button class="button_test">SHOP </button></a>
-                    &nbsp
-                    <button class="button_test">ABOUT US </button>
-                    &nbsp
-                         <button class="button_test">SUPPORT </button>
-                </div>
-
-                </div>
-
-
-
-                {% if error %}
-                    <div class="flash-notice">
-                        <center>  <div style="width: 400px" class="alert alert-danger fade in">
-                             <strong>Invalid Username/Password</strong>
-                        </div></center>
-                    </div>
-                {% endif %}
-
-
-    </div>
-
-   {# {% for flash_message in app.session.flashBag.get('notice') %}
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li class="no-hover" style="position: absolute; margin-left: 110%">
+                            <a style="font-weight: 700;color: black;">{{app.user.username}} </a>
+                        </li>
+                        <div class="vertical-line" style="height: 55px; width: 1px;position: absolute;margin-left: 131.5%"></div>
+                        <li class="no-hover2" style="position: absolute; margin-left: 130%">
+                            <a style="font-weight: 700;color: black;" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    {% if error %}
         <div class="flash-notice">
-            <div class="alert alert-danger fade in">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            </div>
+            <center>  <div style="width: 400px" class="alert alert-danger fade in">
+                 <strong>Invalid Username/Password</strong>
+            </div></center>
         </div>
-    {% endfor %}
-      #}
-
-
-    <div class="hero-unit">
-        <h1>
-           {# Pinigai:
-
-
-                {{kaina}}
-
-
-            <a href="{{ path("add_produktas") }}"> +</a>#}
-        </h1>
-        <br>
-        <br>
-        <br>
-        <br>
-        <center>
-
-            <div style="overflow: hidden;font-size: 40pt" >
-                <div id='div1' style=" position: relative;top: -80px; opacity: 1; text-align: center; font-family: 'Bungee', cursive; font-size:50pt; display: inline-block">
-                    BOOST
-                </div>
-            </div>
-            <div style="position: relative;z-index: -1; height: 750px; top: 0px; background-image:url('{{ asset('images/abc2.png') }}')">
-
-
-
-            <br>
-            <br>
-          <div>
-             <img class="logo1" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
-            <img class="logo" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
-          </div>
-
-                <br><br><br><br><br><br><br><br>
-
-
-
-
-        </center>
-
-
-
-
-
-
+    {% endif %}
+    <div style="text-align: center">
+        <span style="color: #000000;height:text-align: center;font-size: 60px;font-family: 'Nexa_Free_Bold', Fallback, sans-serif;">Embrace your riding experience</span>
     </div>
 
+    <div style="text-align: center">
+        <img class="logo1" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
+        <img class="logo" style="position: relative; width: 80px;height:80px;"  src="{{ asset('images/logo.png') }}">
     </div>
-
-
-
-
 
 <script>
 
@@ -158,9 +75,10 @@
     }, 300);
 
 </script>
-    <script src="{{ asset('js/croppie.js') }}"></script>
+    <script src="{{ asset('js/navbaranimation.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
 {% endblock %}
 
 {% block stylesheets %}

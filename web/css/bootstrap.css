@@ -262,10 +262,12 @@ th {
   }
 }
 @font-face {
-  font-family: 'Glyphicons Halflings';
+  font-family: 'Nexa_Free_Bold';
+  src: url("../images/Nexa_Free_Bold-webfont.woff2") format('woff2'),
+  url("../images/Nexa_Free_Bold-webfont.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
 
-  src: url('../fonts/glyphicons-halflings-regular.eot');
-  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -4419,6 +4421,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
   color: black;
+  width: 80px;
 }
 .no-hover:hover{
   background: transparent;
@@ -4430,6 +4433,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   font-size: 13px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
+  width: 90px;
 }
 .no-hover2:hover{
   background: transparent;

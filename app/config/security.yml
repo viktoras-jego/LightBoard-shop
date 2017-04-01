@@ -21,13 +21,13 @@ security:
                 csrf_token_generator: security.csrf.token_manager
                 require_previous_session: false
                 always_use_default_target_path: true
-                default_target_path:            /car
+                default_target_path:            /home
 
 
 
             logout:
                 path: fos_user_security_logout
-                target: /car
+                target: /home
             anonymous:    true
 
     access_control:
