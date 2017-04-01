@@ -90,6 +90,13 @@ class Customer{
     private $date;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(name="ProcessDate", type="datetime",nullable=true)
+     */
+
+    private $processdate;
+
+    /**
      * @var = int
      *
      * @ORM\Column(name="Quantity", type="integer")
@@ -146,7 +153,6 @@ class Customer{
 
     public function  __construct(){
         $this -> date = new \DateTime();
-        $this -> processdate = new \DateTime();
         $this -> delivery ='Not yet sent';
     }
 
@@ -529,4 +535,28 @@ class Customer{
      * @return Customer
      */
    
+
+    /**
+     * Set processdate
+     *
+     * @param \DateTime $processdate
+     *
+     * @return Customer
+     */
+    public function setProcessdate($processdate)
+    {
+        $this->processdate = $processdate;
+
+        return $this;
+    }
+
+    /**
+     * Get processdate
+     *
+     * @return \DateTime
+     */
+    public function getProcessdate()
+    {
+        return $this->processdate;
+    }
 }

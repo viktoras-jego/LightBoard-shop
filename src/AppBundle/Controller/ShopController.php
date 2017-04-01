@@ -429,15 +429,18 @@ class ShopController extends Controller
                 unset($ids["page"]);
                 unset($ids["page2"]);
                 unset($ids["TextSearch2"]);
-                unset($ids["timeDone"]);
 
 
 
                 foreach ($ids as $key => $value){
                     $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
-                    $repox -> setDelivery($value);
-                    $em = $this ->getDoctrine()->getManager();
-                    $em->flush($repox);
+                    $processDate = $repox -> getProcessdate();
+                    if ($processDate == null) {
+                        $repox->setDelivery($value);
+                        $repox->setProcessdate(new \DateTime());
+                        $em = $this->getDoctrine()->getManager();
+                        $em->flush($repox);
+                    }
                 }
         }
 

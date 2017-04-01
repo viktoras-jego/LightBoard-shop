@@ -247,19 +247,19 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('d');
         $qb -> select('d');
         $qb -> andWhere("d.delivery = 'Sent' OR d.delivery = 'Declined'");
-        $qb -> orderBy('d.date','DESC');
+        $qb -> orderBy('d.processdate','DESC');
 
         if($request->query->has('orderTime2')){
             $ordertime = $request->query->get('orderTime2');
 
             if($ordertime == 'Newest'){
 
-                $qb -> orderBy('d.date','DESC');
+                $qb -> orderBy('d.processdate','DESC');
 
             }
             elseif ($ordertime== 'Oldest'){
 
-                $qb -> orderBy('d.date','ASC');
+                $qb -> orderBy('d.processdate','ASC');
 
             }
         }

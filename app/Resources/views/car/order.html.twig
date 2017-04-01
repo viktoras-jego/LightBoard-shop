@@ -133,7 +133,7 @@
                                     <span class="customer-info2"> {{ skateboard.category }}</span>
                                 </div>
                                 <div class="one-order-field2">
-                                    <span class="customer-info1">Date:</span>
+                                    <span class="customer-info1">Order date:</span>
                                     <span class="customer-info2"> {{ skateboard.date|date("Y-m-d G:i:s", "Europe/Vilnius") }}</span>
                                 </div>
                                 <div class="one-order-field2">
@@ -245,8 +245,12 @@
                                     <span class="customer-info2"> {{ skateboard2.category }}</span>
                                 </div>
                                 <div class="one-order-field2">
-                                    <span class="customer-info1">Date:</span>
+                                    <span class="customer-info1">Order date:</span>
                                     <span class="customer-info2"> {{ skateboard2.date|date("Y-m-d G:i:s", "Europe/Vilnius") }}</span>
+                                </div>
+                                <div class="one-order-field2">
+                                    <span class="customer-info1">Process date:</span>
+                                    <span class="customer-info2"> {{ skateboard2.processdate|date("Y-m-d G:i:s", "Europe/Vilnius") }}</span>
                                 </div>
                                 <div class="one-order-field2">
                                     <span class="customer-info1">Quantity:</span>
