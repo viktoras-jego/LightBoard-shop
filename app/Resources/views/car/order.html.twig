@@ -7,7 +7,7 @@
     <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600|Catamaran:300|Dosis:500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans:700|Lato:700|Source+Sans+Pro:600|Catamaran:300|Dosis:500|Montserrat:400" rel="stylesheet">
 
     <div id="black-box1" class="black-block" style="margin-top: -20px"></div>
     <nav class="navbar navbar-default navbar-fixed-top" style="border: 0px solid transparent;;background: white">
@@ -32,7 +32,15 @@
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
-
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li class="no-hover" style="width: 100px;position: absolute; margin-left: 110%">
+                            <a style="font-weight: 700;color: black;">{{app.user.username}} </a>
+                        </li>
+                        <div class="vertical-line" style="height: 55px; width: 1px;position: absolute;margin-left: 131.5%"></div>
+                        <li class="no-hover2" style="width: 100px;position: absolute; margin-left: 130%">
+                            <a style="font-weight: 700;color: black;" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

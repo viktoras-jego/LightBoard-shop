@@ -4412,6 +4412,30 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     border-bottom-color: #fff;
   }
 }
+.no-hover{
+  height: 55px;
+  position: absolute;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  color: black;
+}
+.no-hover:hover{
+  background: transparent;
+  color: black;
+}
+.no-hover2{
+  height: 55px;
+  position: absolute;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+}
+.no-hover2:hover{
+  background: transparent;
+  color: black;
+  text-decoration: underline;
+}
 .nav-pills > li {
   float: left;
 }

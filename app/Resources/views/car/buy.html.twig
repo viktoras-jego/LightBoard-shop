@@ -3,7 +3,7 @@
 {% block body %}
 <link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
 <script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
-<link href="https://fonts.googleapis.com/css?family=Catamaran:800|Lato:700|Montserrat:700|Source+Sans+Pro:600|Raleway:500|PT+Sans" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Catamaran:800|Lato:700|Montserrat:400|Source+Sans+Pro:600|Raleway:500|PT+Sans" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
     <meta charset="utf-8">
@@ -32,7 +32,15 @@
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
-
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li class="no-hover" style="width: 100px;position: absolute; margin-left: 110%">
+                            <a style="color: black;">{{app.user.username}} </a>
+                        </li>
+                        <div class="vertical-line" style="height: 55px; width: 1px;position: absolute;margin-left: 131.5%"></div>
+                        <li class="no-hover2" style="width: 100px;position: absolute; margin-left: 130%">
+                            <a style="color: black;" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -53,7 +61,7 @@
                 <img class="image_object" src="{{ product.photos[0].url }}" style="height: 360px; width: 248px;position: absolute">
                 <div class="vertical-line" style="height: 360px; width: 1px;position: absolute;margin-left: 280px"></div>
                 <div style="text-align: center;padding-left: 25em">
-                    <span style="font-family: 'Montserrat', sans-serif;text-align: right;font-size: 30px">{{ product.title }}</span>
+                    <span style="font-weight: 700;font-family: 'Montserrat', sans-serif;text-align: right;font-size: 30px">{{ product.title }}</span>
                     <br>
                     <span style="font-family: 'Raleway', sans-serif;text-align: right;font-size: 20px">{{ product.category }}</span>
                     <br><br>
