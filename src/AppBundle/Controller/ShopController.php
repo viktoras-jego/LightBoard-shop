@@ -220,12 +220,14 @@ class ShopController extends Controller
 
 
 
-        // Create our form
         $form = $this -> createFormBuilder($product)
-            ->add('title',TextType::class)
+            ->add('title',TextType::class,array(
+                'attr' => array('style' => 'width: 200px;'),
+                'label' => false,))
 
             ->add('category',ChoiceType::class, array(
-                'label' => 'Category',
+                'label' => false,
+                'attr' => array('style' => 'width: 200px;'),
                 'choices' => array(
                     'Pennyboard' => 'Pennyboard',
                     'Skateboard' => 'Skateboard',
@@ -233,27 +235,34 @@ class ShopController extends Controller
                 )
             ))
             ->add('price',MoneyType::class, array(
-                'label' => ' ',
+                'attr' => array('style' => 'width: 80px; height: 35px'),
+                'label' => false,
+                'currency' => false,
+                'empty_data'  => '',
             ))
             ->add('description',TextareaType::class,array(
-                'label' => 'Description',
-                'attr' => array('style' => 'width: 100px;',
-                'style' => 'height: 75px'
+                'label' => false,
+                'attr' => array('style' => 'width: 200px; height: 85px; max-width:200px; max-height: 85px;min-width:200px; min-height: 85px',
+                    'row' => '4',
+                    'col' => '4',
+                    'maxlength' => "100"
                 ),
                 'required'    => false,
             ))
             ->add('randomString',HiddenType::class)
             ->add('img', FileType::class, [
-                'label' => ' ',
+                'label' => false,
                 'mapped' => false,
                 "attr" => array(
-                    "multiple" => "multiple",
+                    'style' => 'width: 100px',
+                    "multiple" => false,
                     'id' =>'imgInp'
-                    )
+                ),
+                'required'    => false,
 
             ])
             ->add('save',SubmitType::class,array(
-                'label' => 'Create',
+                'label' => 'Save',
                 'attr' => array('style' => 'width: 100px')
             ))
             ->getForm()
@@ -378,6 +387,169 @@ class ShopController extends Controller
     }
 
     /**
+     * @Route ("/trueedit/{skateboard}",name="trueedit_skate")
+     * @param Request $request
+     * @param Car $car
+     * @return Response
+     */
+
+    public function trueeditAction(Request $request, Skateboard $skateboard){
+
+        $form = $this -> createFormBuilder($skateboard)
+            ->add('title',TextType::class,array(
+                'attr' => array('style' => 'width: 200px;'),
+                'label' => false,))
+
+            ->add('category',ChoiceType::class, array(
+                'label' => false,
+                'attr' => array('style' => 'width: 200px;'),
+                'choices' => array(
+                    'Pennyboard' => 'Pennyboard',
+                    'Skateboard' => 'Skateboard',
+                    'Longboard' => 'Longboard',
+                )
+            ))
+            ->add('price',MoneyType::class, array(
+                'attr' => array('style' => 'width: 80px; height: 35px'),
+                'label' => false,
+                'currency' => false,
+            ))
+            ->add('description',TextareaType::class,array(
+                'label' => false,
+                'attr' => array('style' => 'width: 200px; height: 85px; max-width:200px; max-height: 85px;min-width:200px; min-height: 85px',
+                    'row' => '4',
+                    'col' => '4',
+                    'maxlength' => "100"
+                ),
+                'required'    => false,
+            ))
+            ->add('randomString',HiddenType::class)
+            ->add('img', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                "attr" => array(
+                    'style' => 'width: 100px',
+                    "multiple" => false,
+                    'id' =>'imgInp'
+                ),
+                'required'    => false,
+
+            ])
+            ->add('save',SubmitType::class,array(
+                'label' => 'Save',
+                'attr' => array('style' => 'width: 100px')
+            ))
+            ->getForm()
+        ;
+
+        $form->handleRequest($request);
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this ->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('shop_page');
+        }
+        $randomStr = $this ->get('Token_Generator')->generateRandomString();
+        $form->get('randomString')->setData($randomStr);
+
+        return $this->render('car/trueedit.html.twig',[
+            'randomStr'=> $randomStr,
+            'product' => $skateboard,
+            'forma'=> $form ->createView(),
+            'edit' =>true,
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+        ]);
+
+    }
+
+    /**
+     * @Route ("/delete/{skateboard}",name="delete_skate")
+     * @param Request $request
+     * @param Car $car
+     * @return Response
+     */
+
+    public function deleteAction(Request $request, Skateboard $skateboard){
+
+        $form = $this -> createFormBuilder($skateboard)
+            ->add('save',SubmitType::class,array(
+                'label' => 'Delete',
+                'attr' => array('style' => 'width: 100px')
+            ))
+            ->getForm()
+        ;
+
+        $form->handleRequest($request);
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this ->getDoctrine()->getManager();
+            $url = $skateboard->getPhotos()->get(0);
+            $em->remove($url);
+            $em->remove($skateboard);
+            $em->flush();
+            return $this->redirectToRoute('shop_page');
+        }
+
+        return $this->render('car/delete2.html.twig',[
+            'product' => $skateboard,
+            'forma'=> $form ->createView(),
+            'edit' =>true,
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+        ]);
+
+    }
+
+    /**
      * @Route ("/skate/{skateboard}",name="buy_skate")
      * @param Request $request
      * @param Car $car
@@ -422,7 +594,6 @@ class ShopController extends Controller
             ))
 
             ->add('title',HiddenType::class)
-
             ->add('category',HiddenType::class)
             ->add('price',HiddenType::class)
             ->add('description',HiddenType::class)
@@ -606,7 +777,6 @@ class ShopController extends Controller
         $image = $content['image'];
         $randomStr2 = $content['randomStr'];
 
-
 if($image != null){
 
 
@@ -639,32 +809,50 @@ if($image != null){
                 $em->flush();
 
 }
-/*
-               if($pms && isset($pms['status']) && $pms['status'] == 200){
-                   $em = $this ->getDoctrine()->getManager();
-                   $em->persist($product);
-                   $photo = new Photos();
-                   $photo->setUrl($url);
-                   $photo->setSkateboard($product);
-                   $em->persist($photo);
-                   $em->flush();
+        return $this->redirectToRoute('shop_page');
+    }
+    /**
+     * @Route ("/crop2", name="crop2_image")
+     * @param Request $request
+     * @return Response
+     */
+    public function crop2Action(Request $request){
+        $content = json_decode($request->getContent(), true);
+        $image = $content['image'];
+        $randomStr2 = $content['randomStr'];
 
-                   return $this->redirectToRoute('edit_skate', ['skateboard' => $product->getId()]);
-               }else{
 
-                   echo "<h2>There's a Problem</h2>";
-                   echo $pms['data']['error'];
-               }*/
+        if($image != null){
+
+            $em = $this->getDoctrine()->getManager();
+            $prod = $em->getRepository('AppBundle:Skateboard')->findOneBy([
+                'randomString'=> $randomStr2
+            ]);
+            $client_id="d5bfa397cfd42db";
+            $timeout = 30;
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'https://api.imgur.com/3/image.json');
+            curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . $client_id));
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $image);
+            $out = curl_exec($curl);
+            curl_close ($curl);
+            $pms = json_decode($out,true);
+            $url=$pms['data']['link'];
+
+            $photo = $prod->getPhotos()[0];
+
+            $photo->setUrl($url);
+            $photo->setSkateboard($prod);
+
+            $em->flush();
+
+        }
+
+
         return $this->redirectToRoute('shop_page');
 
-
-
-
-
-
-
-
-
     }
-
 }

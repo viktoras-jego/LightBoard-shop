@@ -123,7 +123,7 @@
                         </div>
                         </form>
                         {% if 'ROLE_USER' in user_roles%}
-                                <a style="padding-left: 32em" href="{{ path("add_product") }}"><button class="button_test">Add new product </button></a>
+                                <a style="margin-left: 32em" href="{{ path("add_product") }}"><button  class="button_test">Add new product </button></a>
                         {% endif %}
 
                     </div>
@@ -163,21 +163,33 @@
 
             {% for skateboard in skateboard %}
 
-                <div  style="text-align: center;" class="col-sm-3">
-                    <a class="image_object" href ="{{ path("buy_skate",{skateboard: skateboard.id}) }}"><div style="z-index: 1;overflow: hidden; position: relative;text-decoration: none;">
-                            {# <img class="image_object" src="{{ asset('images/skt.JPG') }}"> #}
-                            {#{% for photo in skateboard.photos %}
-                             <img class="image_object" src="{{ photo.url }}">
-                            {% endfor %}#}
-                            <img class="image_object" src="{{ skateboard.photos[0].url }}" style="height: 225px; width: 155px">
+        <div style="height: 317px" class="col-sm-3">
 
-                            <br>
-                            <div class="image_title" style="font-family: 'Raleway', sans-serif;font-weight: 300;font-size: 12pt">   {{ skateboard.title }}</div>
-                            <div class="image_price" style="text-decoration: none; font-family: 'Roboto', sans-serif;font-size: 11pt">  {{ skateboard.price }}€</div>
-                            <br>
-                        </div></a>
-                </div>
 
+            {% if 'ROLE_USER' in user_roles%}
+                <div style="position: absolute;top: 0px;right: 0px">
+               <a  href ="{{ path("delete_skate",{skateboard: skateboard.id}) }}"> <button  style="position: relative;float:right" class="button_delete"> </button> </a>
+                <br>
+               <a  href ="{{ path("trueedit_skate",{skateboard: skateboard.id}) }}"> <button  style="position: relative;float:right" class="button_edit"> </button> </a>
+        </div>
+            {% endif %}
+
+
+
+            <div  style="text-align: center">
+                <a class="image_object" href ="{{ path("buy_skate",{skateboard: skateboard.id}) }}">
+                    <div style="width: 392px;z-index: 1;overflow: hidden; position: relative;text-decoration: none;">
+                        <img  class="image_object" src="{{ skateboard.photos[0].url }}" style="height: 225px; width: 155px">
+                        <br>
+                        <div class="image_title" style="font-family: 'Raleway', sans-serif;font-weight: 300;font-size: 12pt">{{ skateboard.title }}</div>
+                        <div class="image_price" style="text-decoration: none; font-family: 'Roboto', sans-serif;font-size: 11pt">{{ skateboard.price }}€</div>
+                        <br>
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
             {% endfor %}
 
 
@@ -243,7 +255,7 @@
     $('#Category').val('{{ category }}');
     {% endif %}
 
-    pag
+
     $('#MoreThan').change(function () {
         document.getElementById("ByPriceForm").submit();
     })

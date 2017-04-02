@@ -102,7 +102,7 @@ class CarController extends Controller
         return $this->render('car/add.html.twig',[
                 'produktas' => $produktas,
                 'forma'=> $form ->createView(),
-                'edit' =>false,
+                'editedit' =>false,
             ]
         );}
 

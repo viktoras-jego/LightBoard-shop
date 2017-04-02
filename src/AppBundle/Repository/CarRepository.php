@@ -178,20 +178,20 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
 
         if($request->query->has('TextSearch')){
             $text = $request->query->get('TextSearch');
-            if (ctype_space($text)) {
+            if (!trim($text)) {
 
             }
             else{
-             $qb -> andWhere("d.firstName LIKE '%$text%'
-              OR d.lastName LIKE '%$text%'
-               OR d.address LIKE '%$text%'
-                OR d.city LIKE '%$text%'
-                 OR d.country LIKE '%$text%'
-                  OR d.postcode LIKE '%$text%'
-                   OR d.email LIKE '%$text%'
-                    OR d.date LIKE '%$text%'
-                     OR d.postcode LIKE '%$text%'
-                       ");
+                $qb -> andWhere("d.firstName LIKE :text
+              OR d.lastName LIKE :text
+               OR d.address LIKE :text
+                OR d.city LIKE :text
+                 OR d.country LIKE :text
+                  OR d.postcode LIKE :text
+                   OR d.email LIKE :text
+                    OR d.date LIKE :text
+                     OR d.postcode LIKE :text
+                       ")->setParameter('text', "%$text%");
             }
 
         }
@@ -266,20 +266,20 @@ class CarRepository extends \Doctrine\ORM\EntityRepository
 
         if($request->query->has('TextSearch2')){
             $text = $request->query->get('TextSearch2');
-            if (ctype_space($text)) {
+            if (!trim($text)) {
 
             }
             else{
-                $qb -> andWhere("d.firstName LIKE '%$text%'
-              OR d.lastName LIKE '%$text%'
-               OR d.address LIKE '%$text%'
-                OR d.city LIKE '%$text%'
-                 OR d.country LIKE '%$text%'
-                  OR d.postcode LIKE '%$text%'
-                   OR d.email LIKE '%$text%'
-                    OR d.date LIKE '%$text%'
-                     OR d.postcode LIKE '%$text%'
-                       ");
+                $qb -> andWhere("d.firstName LIKE :text
+              OR d.lastName LIKE :text
+               OR d.address LIKE :text
+                OR d.city LIKE :text
+                 OR d.country LIKE :text
+                  OR d.postcode LIKE :text
+                   OR d.email LIKE :text
+                    OR d.date LIKE :text
+                     OR d.postcode LIKE :text
+                       ")->setParameter('text', "%$text%");
             }
 
         }

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
-    <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
-    <script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
-    <link href="https://fonts.googleapis.com/css?family=Lato|Source+Sans+Pro:600|Montserrat:400|PT+Sans" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
+<link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
+<script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
+<link href="https://fonts.googleapis.com/css?family=Lato|Source+Sans+Pro:600|Montserrat:400|PT+Sans" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
     <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
         <div class="container">
@@ -50,7 +50,7 @@
         <div style="margin-left: -50px">{{  form_start(forma)   }}</div>
 
         <div style="margin-bottom: 30px;text-align: center">
-            <span class="form-title"> ADD NEW PRODUCT</span>
+            <span class="form-title"> PRODUCT EDIT</span>
         </div>
         <div class="product-input"><span class="product-input2">Title: </span></div> <div class="product-input3">{{  form_row(forma.title)  }}</div>
         <br>
@@ -63,9 +63,16 @@
         <br>
         <div  style="height: 400px;text-align: center">
 
+            <div>
+                <button class="button_test" style="margin-top: 10px; margin-bottom: 10px" type="button" id="change"> Change photo?</button>
+            </div>
+
+            <a data-lightbox="{{ product.photos[0].url }}" href="{{ product.photos[0].url }}">
+                <img id="change-img" class="product-img"  style="margin-top: 20px;width: 230px;height: 300px" src="{{ product.photos[0].url }}">
+            </a>
 
 
-            <div  id="croppie-block" class="panel-body">
+            <div style="display: none" id="croppie-block" class="panel-body">
                 <div class="product-input"><span style="width: 150px;margin-left: -10px;margin-bottom: 20px" class="product-input2">Select photo: </span></div> <div style="margin-right: 19%" class="product-input3">{{  form_widget(forma.img, {'id' : 'imgInp'})  }}</div>
                 <br>
                 <div>
@@ -115,7 +122,7 @@
                 var randomStr = '{{ randomStr }}';
                 $.ajax({
                     type: "POST",
-                    url : '{{ path('crop_image') }}',
+                    url : '{{ path('crop2_image') }}',
                     data : JSON.stringify({
                         randomStr: randomStr,
                         image: res1
