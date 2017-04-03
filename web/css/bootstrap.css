@@ -3300,6 +3300,15 @@ li:hover{
 .product-block{
   border: solid rgb(0, 0, 0) 2px;
 }
+.lines-height{
+  height: 100px;
+}
+.line-svg{
+  stroke: rgb(0, 0, 0);
+  stroke-width:4;
+  min-width: 100%;
+  max-width: 100%;
+}
 .button_test3 {
   margin-left: 5px;
   border-radius:4px;

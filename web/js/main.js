@@ -11,14 +11,6 @@ var sid = new TimelineMax({paused:true})
 var playBtn = document.getElementById("login1");
 var login = document.getElementById("log");
 var sidebar = document.getElementById("sidebar");
-
-
-
-
-
-
-
-
    if(playBtn) {
 
    abc.to(login, 0, {
@@ -54,9 +46,6 @@ var sidebar = document.getElementById("sidebar");
          abc1--;
          console.log(abc1);
    }
-
-
-
 }
 
 }
@@ -68,9 +57,6 @@ var tl = new TimelineMax({
 var at = new TimelineMax({
 
 });
-
-
-
 
 at.to(".logo1",0,{
 

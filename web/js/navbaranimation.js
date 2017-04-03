@@ -13,7 +13,6 @@
     var buy = document.getElementById("btn-buy");
     var box = document.getElementById("buy-box");
 
-
     logo.to(board, 0, {
         x: -63,
     });
