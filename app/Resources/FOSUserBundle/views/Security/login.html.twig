@@ -1,5 +1,71 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
+{% block body %}
+    <title>{% block title %}Login{% endblock %}</title>
+    {% trans_default_domain 'FOSUserBundle' %}
+    <link href="https://fonts.googleapis.com/css?family=Lato|Source+Sans+Pro:600|Montserrat:400|PT+Sans" rel="stylesheet">
+    <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a style="text-decoration: none" href="{{ path("car_index") }}">
+                    <div class="nav-logo">
+                        <img id="light" class="navbar-logo" src="{{ asset('images/lb5.jpg') }}">
+                        <img id="board" class="navbar-logo2" src="{{ asset('images/lb4.jpg') }}">
+                    </div>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-md-6"></div>
+            <div style="padding-left: 4em" class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
+                <ul style="height: 10px" class="nav navbar-nav">
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("order_skate") }}">Orders</a></li>
+                    {% endif %}
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
+                    {% if 'ROLE_USER' in user_roles%}
+                        <li class="no-hover" style="position: absolute; margin-left: 109%">
+                            <a style="font-weight: 700;color: black;">{{app.user.username}} </a>
+                        </li>
+                        <div class="vertical-line" style="height: 55px; width: 1px;position: absolute;margin-left: 131.5%"></div>
+                        <li class="no-hover2" style="position: absolute; margin-left: 130%">
+                            <a style="font-weight: 700;color: black;" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                        </li>
+                    {% endif %}
 
-{% block fos_user_content %}
-    {{ include('FOSUserBundle:Security:login_content.html.twig') }}
-{% endblock fos_user_content %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+
+
+    <div  class="col-md-4"></div>
+    <div style="border-radius: 3px;background: white;padding-top: 40px" class="col-md-4 product-block">
+
+        <div style="position: relative;text-align: center">
+            <div style="margin-bottom: 30px;text-align: center">
+                <span class="form-title"> LOGIN</span>
+            </div>
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                {% if csrf_token %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                {% endif %}
+                <div style="horiz-align: center; display: inline">
+                    <label for="username" class="sr-only">Username</label>
+                    <input  type="username" id="username" style="display: inline-block;width: 200px" name="_username" class="form-control" placeholder="{{ 'security.login.username'|trans }}" required="required" >
+                    <br>
+                    <label for="password" class="sr-only">Password</label>
+                    <input type="password" id="password" style="margin-top: 10px;display: inline-block;width: 200px" class="form-control" name="_password" placeholder="{{ 'security.login.password'|trans }}" required="required">
+                </div>
+                <h4> <input type="checkbox" value="remember-me"> Remember me</h4>
+                <button style="margin-top: 20px;margin-bottom: 30px" type="submit" class="button_test">LOG IN </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="{{ asset('js/navbaranimation.js') }}"></script>
+{% endblock body %}

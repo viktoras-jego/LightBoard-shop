@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <title>{% block title %}Delete{% endblock %}</title>
 <link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
 <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
 <script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
@@ -31,8 +32,10 @@
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
                     {% if 'ROLE_USER' in user_roles%}
-                        <li class="no-hover" style="position: absolute; margin-left: 110%">
-                            <a style="font-weight: 700;color: black;">{{app.user.username}} </a>
+                        <li class="no-hover" style="position: absolute; margin-left: 100%">
+                            <div style="padding-top:15px;margin-right: -15px;float: right;">
+                                <a style="text-decoration: none;font-weight: 700;color: black;">{{app.user.username}}</a>
+                            </div>
                         </li>
                         <div class="vertical-line" style="height: 55px; width: 1px;position: absolute;margin-left: 131.5%"></div>
                         <li class="no-hover2" style="position: absolute; margin-left: 130%">

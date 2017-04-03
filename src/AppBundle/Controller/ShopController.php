@@ -23,6 +23,10 @@ use AppBundle\Service\MathService;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Types\DecimalType;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\FOSUserEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -38,8 +42,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  *
@@ -207,7 +214,7 @@ class ShopController extends Controller
      */
     public function addAction(Request $request)
     {
-        $product = new Skateboard();
+
 
         $role = [];
         if($this->getUser()){
@@ -217,7 +224,7 @@ class ShopController extends Controller
         if(!in_array('ROLE_USER', $role)){
             return $this->redirectToRoute('car_index');
         }
-
+        $product = new Skateboard();
 
 
         $form = $this -> createFormBuilder($product)
@@ -335,7 +342,14 @@ class ShopController extends Controller
      */
 
     public function editAction(Request $request, Skateboard $skateboard){
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
 
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
 
 
         $form = $this->createForm(SkateboardType::class, $skateboard);
@@ -394,6 +408,15 @@ class ShopController extends Controller
      */
 
     public function trueeditAction(Request $request, Skateboard $skateboard){
+
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
 
         $form = $this -> createFormBuilder($skateboard)
             ->add('title',TextType::class,array(
@@ -496,6 +519,15 @@ class ShopController extends Controller
 
     public function deleteAction(Request $request, Skateboard $skateboard){
 
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
+
         $form = $this -> createFormBuilder($skateboard)
             ->add('save',SubmitType::class,array(
                 'label' => 'Delete',
@@ -566,7 +598,7 @@ class ShopController extends Controller
 
         $form = $this -> createFormBuilder($product)
             ->add('firstName',TextType::class,array(
-                'label' => 'First name:'
+                'label' => 'First name:',
             ))
             ->add('lastName',TextType::class,array(
                 'label' => 'Last name:'
@@ -855,4 +887,236 @@ if($image != null){
         return $this->redirectToRoute('shop_page');
 
     }
+
+
+    /**
+     * @Route("/login",name="login_skate")
+     */
+    public function loginAction(Request $request){
+
+        $session = $request->getSession();
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+        // dump($request-> query->get('comment'));
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Produktas');
+        $repo2 = $this->getDoctrine()->getRepository('AppBundle:Car');
+        $cars = $repo2->findAll();
+        $produktas = $repo->find(1);
+
+        return $this->render('@FOSUser/Security/login.html.twig',[
+            'cars' => $cars,
+            'kaina' => $produktas->getKaina(),
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+        ]);
+    }
+    /**
+     * @param Request $request
+     * @Route("/register",name="register_skate")
+     * @return Response
+     */
+    public function registerAction(Request $request)
+    {
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
+
+        /** @var $formFactory FactoryInterface */
+        $formFactory = $this->get('fos_user.registration.form.factory');
+        /** @var $userManager UserManagerInterface */
+        $userManager = $this->get('fos_user.user_manager');
+        /** @var $dispatcher EventDispatcherInterface */
+        $dispatcher = $this->get('event_dispatcher');
+
+        $user = $userManager->createUser();
+        $user->setEnabled(true);
+
+        $event = new GetResponseUserEvent($user, $request);
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+
+        dump($event);
+        if (null !== $event->getResponse()) {
+            return $event->getResponse();
+        }
+
+        $form = $formFactory->createForm();
+        $form->setData($user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+
+
+                $userManager->updateUser($user);
+
+                if (null === $response = $event->getResponse()) {
+                    $response = $this->redirectToRoute('confirmed_action');
+                }
+
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+                return $response;
+            }
+
+            $event = new FormEvent($form, $request);
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
+
+            if (null !== $response = $event->getResponse()) {
+                return $response;
+            }
+        }
+
+        return $this->render('FOSUserBundle:Registration:register.html.twig', array(
+            'form' => $form->createView(),
+            'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+        ));
+    }
+
+    /**
+     * Tell the user to check his email provider.
+     */
+    public function checkEmailAction()
+    {
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
+        $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
+
+        if (empty($email)) {
+            return new RedirectResponse($this->get('router')->generate('fos_user_registration_register'));
+        }
+
+        $this->get('session')->remove('fos_user_send_confirmation_email/email');
+        $user = $this->get('fos_user.user_manager')->findUserByEmail($email);
+
+        if (null === $user) {
+            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
+        }
+
+        return $this->render('FOSUserBundle:Registration:check_email.html.twig', array(
+            'user' => $user,
+        ));
+    }
+
+    /**
+     * Receive the confirmation token from user email provider, login the user.
+     *
+     * @param Request $request
+     * @param string  $token
+     *
+     * @return Response
+     */
+    public function confirmAction(Request $request, $token)
+    {
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
+
+        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        $userManager = $this->get('fos_user.user_manager');
+
+        $user = $userManager->findUserByConfirmationToken($token);
+
+        if (null === $user) {
+            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
+        }
+
+        /** @var $dispatcher EventDispatcherInterface */
+        $dispatcher = $this->get('event_dispatcher');
+
+        $user->setConfirmationToken(null);
+        $user->setEnabled(true);
+
+        $event = new GetResponseUserEvent($user, $request);
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
+
+        $userManager->updateUser($user);
+
+        if (null === $response = $event->getResponse()) {
+            $url = $this->generateUrl('fos_user_registration_confirmed');
+            $response = new RedirectResponse($url);
+        }
+
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+
+        return $response;
+    }
+
+    /**
+     * @Route("/confirmed",name="confirmed_action")
+     */
+    public function confirmedAction()
+    {
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
+
+        $user = $this->getUser();
+        if (!is_object($user) || !$user instanceof UserInterface) {
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
+
+        return $this->redirectToRoute('car_index');
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getTargetUrlFromSession()
+    {
+        $role = [];
+        if($this->getUser()){
+            $role = $this->getUser()->getRoles();
+        }
+
+        if(!in_array('ROLE_USER', $role)){
+            return $this->redirectToRoute('car_index');
+        }
+
+        $key = sprintf('_security.%s.target_path', $this->get('security.token_storage')->getToken()->getProviderKey());
+
+        if ($this->get('session')->has($key)) {
+            return $this->get('session')->get($key);
+        }
+    }
+
 }

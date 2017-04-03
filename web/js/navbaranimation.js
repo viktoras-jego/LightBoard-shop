@@ -32,18 +32,4 @@
             ease: Power4. easeOut,
         })
     }
-
-    $("#btn-buy").click(function() {
-        tl.to(box, 0, {
-            display: 'block',
-        });
-        $('html, body').animate({
-            scrollTop: $("#buy-box").offset().top
-        }, 2000);
-
-    });
-
-
-
-
 })()

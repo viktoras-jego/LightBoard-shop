@@ -15,7 +15,7 @@ CSSPlugin.defaultSmoothOrigin = true;
     var image2 = document.getElementById("image2");
     var linecolumn = document.getElementsByClassName("line-column");
 
-   tl.to(linecolumn, 2,{
+   tl.to(linecolumn, 4,{
             x:400,y:-400,
        repeat:-1,
        ease:Linear.easeNone
