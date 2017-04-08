@@ -722,7 +722,7 @@ class ShopController extends Controller
 
 
                 foreach ($ids as $key => $value){
-                    dump($ids);
+
                     $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
                     $processDate = $repox -> getProcessdate();
                     if ($processDate != null) {
@@ -830,12 +830,8 @@ if($image != null){
                 $prod = $em->getRepository('AppBundle:Skateboard')->findOneBy([
                     'randomString'=> $randomStr2
                 ]);
-                dump($prod);
-                dump($randomStr2);
-
                 $photo = new Photos();
                 $photo->setUrl($url);
-                dump($photo);
                 $photo->setSkateboard($prod);
                 $em->persist($photo);
                 $em->flush();
@@ -957,7 +953,7 @@ if($image != null){
         $event = new GetResponseUserEvent($user, $request);
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
 
-        dump($event);
+
         if (null !== $event->getResponse()) {
             return $event->getResponse();
         }
