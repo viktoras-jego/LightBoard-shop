@@ -3351,6 +3351,24 @@ li:hover{
   padding-left: 7px;
   padding-right: 7px;
 }
+.dot{
+  width:10px;
+  height:10px;
+  position:absolute;
+  background-color: #000000;
+  border-radius: 20px;
+  z-index:2;
+}
+html, body, #container {
+  width:100%;
+  height:100%;
+}
+
+
+
+
+
+
 .button_test4:hover {
   background: #e0e0e0;
   text-decoration: none;
@@ -3361,6 +3379,11 @@ li:hover{
 }
 .line-space{
   height: 400px;
+}
+.image_object2{
+  background: transparent;
+}
+.image_object2:hover{
 }
 .button_test2 {
   border-radius:1px;
@@ -3408,7 +3431,11 @@ li:hover{
   height: 0px;
   border: solid rgb(0, 0, 0) 1px;
   margin-top: -3px;
-
+}
+.horizontal-line2{
+  border: solid rgb(0, 0, 0) 1px;
+  width: 100%;
+  margin-top: 20px;
 }
 .vertical-line{
   width: 1px; /* Line width */

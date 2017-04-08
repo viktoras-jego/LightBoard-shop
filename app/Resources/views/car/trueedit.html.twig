@@ -23,14 +23,13 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="col-md-6"></div>
-            <div style="padding-left: 4em" class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
+            <div style="padding-left: 10em" class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
                 <ul style="height: 10px" class="nav navbar-nav">
                     {% if 'ROLE_USER' in user_roles%}
                         <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("order_skate") }}">Orders</a></li>
                     {% endif %}
                     <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="{{ path("shop_page") }}">Shop</a></li>
-                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black" href="#">About</a></li>
-                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="#">Contact</a></li>
+                    <li style="height: 55px"><a style="height: 55px;font-family: 'Source Sans Pro', sans-serif; font-size: 15px;color: black"  href="{{ path("constact_skate") }}">Contact</a></li>
                     {% if 'ROLE_USER' in user_roles%}
                         <li class="no-hover" style="position: absolute; margin-left: 100%">
                             <div style="padding-top:15px;margin-right: -15px;float: right;">

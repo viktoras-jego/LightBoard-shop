@@ -722,9 +722,10 @@ class ShopController extends Controller
 
 
                 foreach ($ids as $key => $value){
+                    dump($ids);
                     $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
                     $processDate = $repox -> getProcessdate();
-                    if ($processDate == null) {
+                    if ($processDate != null) {
                         $repox->setDelivery($value);
                         $repox->setProcessdate(new \DateTime());
                         $em = $this->getDoctrine()->getManager();
@@ -811,15 +812,6 @@ class ShopController extends Controller
 
 if($image != null){
 
-
-
-                $em = $this->getDoctrine()->getManager();
-                $prod = $em->getRepository('AppBundle:Skateboard')->findOneBy([
-                    'randomString'=> $randomStr2
-                ]);
-
-
-
                 $client_id="d5bfa397cfd42db";
                 $timeout = 30;
                 $curl = curl_init();
@@ -834,8 +826,16 @@ if($image != null){
                 $pms = json_decode($out,true);
                 $url=$pms['data']['link'];
 
+                $em = $this->getDoctrine()->getManager();
+                $prod = $em->getRepository('AppBundle:Skateboard')->findOneBy([
+                    'randomString'=> $randomStr2
+                ]);
+                dump($prod);
+                dump($randomStr2);
+
                 $photo = new Photos();
                 $photo->setUrl($url);
+                dump($photo);
                 $photo->setSkateboard($prod);
                 $em->persist($photo);
                 $em->flush();
@@ -1119,4 +1119,55 @@ if($image != null){
         }
     }
 
+    /**
+     *
+     * @Route("/contact",name="constact_skate")
+     * @param Request $request
+     * @return Response
+     */
+    public function contacAction(Request $request)
+    {
+
+
+
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $lastUsernameKey = Security::LAST_USERNAME;
+
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has($authErrorKey)) {
+            $error = $request->attributes->get($authErrorKey);
+        } elseif (null !== $session && $session->has($authErrorKey)) {
+            $error = $session->get($authErrorKey);
+            $session->remove($authErrorKey);
+        } else {
+            $error = null;
+        }
+
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+
+        $csrfToken = $this->has('security.csrf.token_manager')
+            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+            : null;
+        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+
+
+
+
+
+        return $this->render('car/contact.html.twig',[
+                'last_username' => $lastUsername,
+                'error' => $error,
+                'csrf_token' => $csrfToken,
+                'user_roles'=>$this->getUser() ? $this->getUser()->getRoles() : null,
+            ]
+        );
+    }
 }

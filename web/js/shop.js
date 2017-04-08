@@ -49,18 +49,6 @@ CSSPlugin.defaultSmoothOrigin = true;
         x: -63,
     });
 
-
-    $(".image_object").hover(over, out);
-
-    function over(){
-        TweenMax.to(this, 0.1,{ease: Power1. easeOut, scaleX:1.04, scaleY:1.04})
-    }
-
-    function out(){
-        TweenMax.to(this, 0.1, {ease: Power1. easeOut, scaleX:1, scaleY:1})
-    }
-
-
     $(".nav-logo").hover(over2, out2);
 
     function over2(){

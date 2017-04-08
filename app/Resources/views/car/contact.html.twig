@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <title>{% block title %}Delete{% endblock %}</title>
-<link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
-<link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
-<script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
-<link href="https://fonts.googleapis.com/css?family=Lato|Source+Sans+Pro:600|Montserrat:400|PT+Sans" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Add new product{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('assets/vendor/Croppie/croppie.css') }}" />
+    <link href="{{ asset('assets/vendor/lightbox2/dist/css/lightbox.css') }}" rel="stylesheet">
+    <script src="{{ asset('assets/vendor/Croppie/croppie.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed|Josefin+Slab:600|Montserrat:400|PT+Sans|Raleway:500,600|Slabo+27px" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <nav class="navbar navbar-default navbar-fixed-top" style="background: white">
         <div class="container">
@@ -46,50 +46,46 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-    <div  class="col-md-4"></div>
-    <div style="border-radius: 3px;background: white;padding-top: 40px" class="col-md-4 product-block">
 
-        <div style="margin-left: -50px">{{  form_start(forma)   }}</div>
-
-        <div style="margin-bottom: 30px;text-align: center">
-            <span class="form-title"> PRODUCT DELETE </span>
-        </div>
-        <div class="product-input"><span style="font-weight: 500" class="product-input2">Title: </span></div> <div class="product-input4">{{ product.title }}</div>
-        <br><br>
-        <div class="product-input"><span style="font-weight: 500" class="product-input2">Category: </span></div> <div class="product-input4">{{  product.category  }}</div>
-        <br><br>
-        <div class="product-input"><span style="font-weight: 500" class="product-input2">Price: </span></div><div class="product-input4">{{  product.price  }}€</div>
-        <br><br>
-        <div class="product-input"><span style="font-weight: 500" class="product-input2">Description: </span></div><div class="product-input4">{{  product.description|nl2br  }}</div>
-        <br><br>
-        <div style="margin-bottom: 30px;text-align: center">
-            <a data-lightbox="{{ product.photos[0].url }}" href="{{ product.photos[0].url }}">
-                <img id="change-img" class="product-img"  style="padding: 5px;margin-top: 20px;width: 230px;height: 300px" src="{{ product.photos[0].url }}">
-            </a>
-        </div>
-
-        <div>
-            <br>
-            <div style="text-align: center;margin-bottom: 20px">
-                {{  form_widget(forma.save,{ 'attr': {'class': 'button_test4'},'id' : 'submit'})   }}
-            </div>
-
-            {{  form_end(forma)  }}
+    <div style="margin-left: 28.5%;position: absolute;width: 800px;height: 500px;border-radius: 3px;margin-top: 5%;z-index: 3;text-align: center;background: white">
+        <div style="padding-top: 30px;padding-right:50px;padding-left: 50px">
+           <span style="font-family: 'Josefin Slab', serif;font-size: 30px">
+               Say hello!
+           </span>
+            <p style="margin-top: 20px;font-family: 'Raleway', sans-serif;font-size: 15px">
+                We would love to hear from you. We are constantly trying to make better skating gear, and for that, your thoughts are essential.
+                So if you have any ups or downs, or perhaps some genius ideas you would like to share with us, please let us know!
+            </p>
+            <p style="margin-top: 20px;font-family: 'Raleway', sans-serif;font-size: 17px;font-weight: 600">
+                We always strive to answer requests right away, but sometimes we might need a few days to get back to you.
+            </p>
+            <hr style="margin-top: 50px" class="horizontal-line2">
+            <p style="margin-top: 30px;font-family: 'Slabo 27px', serif;font-size: 23px;font-weight: 400">
+                CUSTOMER CARE, SPONSORSHIP AND SALES INQUIRIES
+            </p>
+            <p style="margin-top: 30px;font-family: 'Roboto Condensed', sans-serif;font-size: 15px;text-decoration: underline">
+                vza100@gmail.com
+            </p>
+            <p style="margin-top: -13px;font-family: 'Roboto Condensed', sans-serif;font-size: 15px">
+               HQ - LightBoard
+            </p>
+            <p style="margin-top: -13px;font-family: 'Roboto Condensed', sans-serif;font-size: 15px">
+                Gedimino avenue 2
+            </p>
+            <p style="margin-top: -13px;font-family: 'Roboto Condensed', sans-serif;font-size: 15px">
+                14188 Vilnius
+            </p>
+            <p style="margin-top: -13px;font-family: 'Roboto Condensed', sans-serif;font-size: 15px">
+                Lithuania
+            </p>
         </div>
     </div>
 
-    <script src="{{ asset('assets/vendor/lightbox2/dist/js/lightbox.js') }}"></script>
-    <script>
-        $("change").submit(function(){
-            return false;
-        });
+    <div style="width: 92%;height: 90%" id="container"></div>
 
-        lightbox.option({
-            'maxWidth': 654,
-            'maxHeight': 651
 
-        })
-    </script>
+
+
 
 {% endblock %}
 
