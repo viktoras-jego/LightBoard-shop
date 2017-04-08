@@ -125,7 +125,6 @@ class ShopController extends Controller
 
         return $this->render('@FOSUser/Security/index.html.twig',[
             'cars' => $cars,
-            'kaina' => $produktas->getKaina(),
             'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token' => $csrfToken,
@@ -725,7 +724,7 @@ class ShopController extends Controller
 
                     $repox = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($key);
                     $processDate = $repox -> getProcessdate();
-                    if ($processDate != null) {
+                    if ($processDate == null) {
                         $repox->setDelivery($value);
                         $repox->setProcessdate(new \DateTime());
                         $em = $this->getDoctrine()->getManager();
@@ -917,7 +916,6 @@ if($image != null){
 
         return $this->render('@FOSUser/Security/login.html.twig',[
             'cars' => $cars,
-            'kaina' => $produktas->getKaina(),
             'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token' => $csrfToken,
